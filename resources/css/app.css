@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+    .simopang-card {
+        @apply bg-polri-dark border border-polri-dark-light rounded-xl shadow-lg;
+    }
+
+    .simopang-card-header {
+        @apply border-b border-polri-dark-light p-4;
+    }
+
+    .simopang-card-body {
+        @apply p-6;
+    }
+
+    .simopang-btn-primary {
+        @apply bg-polri-red hover:bg-red-800 text-white rounded-lg px-4 py-2 transition;
+    }
+
+    .simopang-input {
+        @apply bg-gray-700 border-gray-600 text-white rounded-lg focus:border-polri-red focus:ring-polri-red;
+    }
+
+    .simopang-table {
+        @apply w-full bg-polri-dark rounded-xl overflow-hidden;
+    }
+}
