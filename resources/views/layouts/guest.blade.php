@@ -62,7 +62,7 @@
                 <img src="{{ asset('images/logo-tikpolri.png') }}" alt="Logo TIK Polri" class="w-20 h-20 object-contain mb-3">
                 <h1 class="text-2xl font-bold text-[#E5E7EB] tracking-wide">SI MOPANG</h1>
                 <p class="text-xs text-[#A8ADB4] mt-1 text-center">Sistem Informasi dan Monitoring Penyerapan Anggaran</p>
-                <p class="text-[10px] text-[#BFC3C8] mt-0.5 tracking-widest uppercase">SATKER BID TIK Polri</p>
+                <p class="text-[10px] text-[#BFC3C8] mt-0.5 tracking-widest uppercase"> BIDANG TIK POLDA JATIM</p>
             </div>
 
             <div class="glass-card rounded-2xl shadow-2xl px-8 py-8">

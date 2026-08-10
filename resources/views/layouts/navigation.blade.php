@@ -2,19 +2,43 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex items-center gap-8">
-                <!-- Logo -->
+            
+            <!-- Logo
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3 shrink-0">
                     <img src="{{ asset('images/logo-tikpolri.png') }}" class="h-10 w-10 object-contain" alt="Logo TIK Polri">
 
                     <div class="flex flex-col">
                         <span class="font-bold text-polri-silver tracking-widest text-sm">
-                            SI MOPANG
+                            SIMOPANG
                         </span>
                         <span class="text-[10px] text-polri-silver-dark uppercase tracking-wider">
                             Monitoring Penyerapan Anggaran
                         </span>
                     </div>
-                </a>
+                </a>  -->
+
+           <a href="{{ route('dashboard') }}" class="flex items-center gap-3 shrink-0">
+
+    <img
+        src="{{ asset('images/logo-tikpolri.png') }}"
+        class="h-12 w-12 object-contain"
+        alt="Logo TIK Polri"
+    >
+
+    <div class="flex flex-col leading-none">
+    <span class="text-[28px] tracking-[0.4em] font-black text-white">
+        SIMOPANG
+    </span>
+
+    <span class="text-[8px] uppercase tracking-[0.2em] text-polri-silver">
+        Sistem Monitoring Penyerapan Anggaran
+    </span>
+</div>
+
+</a>
+
+                
+
                 <!-- Menu Horizontal (Desktop) -->
                 <div class="hidden lg:flex items-center gap-1">
                     @if(auth()->user()->role === 'super_admin')

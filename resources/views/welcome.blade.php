@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SI MOPANG - Bid TIK Polda Jatim</title>
+    <title>SIMOPANG - Bid TIK Polda Jatim</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -83,10 +83,20 @@
     <nav class="relative z-10 border-b border-gray-700 bg-gray-900/50 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="{{ asset('images/logo-tikpolri.png') }}" alt="Logo TIK Polri" class="h-10 w-10 object-contain">
-                <div>
-                    <p class="font-semibold text-polri-gray text-lg leading-none">SI MOPANG</p>
-                    <p class="text-[10px] text-polri-silver-dark tracking-widest uppercase mt-1">SATKER BID TIK POLDA JATIM</p>
+                <img
+                        src="{{ asset('images/logo-tikpolri.png') }}"
+                        class="h-12 w-12 object-contain"
+                        alt="Logo TIK Polri"
+                    >
+
+                <div class="flex flex-col leading-none">
+                    <span class="text-[28px] tracking-[0.4em] font-black text-white">
+                        SIMOPANG
+                    </span>
+
+                    <span class="text-[8px] uppercase tracking-[0.2em] text-polri-silver">
+                        Sistem Monitoring Penyerapan Anggaran
+                    </span>
                 </div>
             </div>
             <div class="space-x-3">
@@ -142,23 +152,21 @@
             <!-- Kiri: Teks -->
             <div class="pt-6">
 
-                <p class="text-xs text-gray-400 tracking-widest uppercase mb-4">
-                    Kepolisian Negara Republik Indonesia Daerah Jawa Timur
+                <p class="text-xs text-gray-400 tracking-widest uppercase tracking-[0.2em] text-justify">
+                    BIDANG TEKNOLOGI INFORMASI DAN KOMUNIKASI - POLDA JAWA TIMUR
                 </p>
 
-                <h1 class="text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-                    Sistem Informasi dan Monitoring
-                    <br>
-                    Penyerapan Anggaran
+                <h1 class="text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 text-justify [text-align-last:left] max-w-[650px]">
+                    Sistem Informasi dan Monitoring Penyerapan Anggaran
                 </h1>
 
-                <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-xl">
+                <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-xl text-justify [text-align-last:left]">
                     Mendukung optimalisasi pencapaian nilai IKPA pada Satker Bidang
                     Teknologi Informasi dan Komunikasi Polda Jawa Timur melalui
                     digitalisasi pengajuan, monitoring, dan realisasi anggaran secara
                     terstruktur, transparan, dan tepat waktu.
                 </p>
-
+               
                 @guest
                     <a href="{{ route('login') }}"
                        class="inline-flex items-center justify-center px-10 py-3.5 bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-xl hover:opacity-90 transition font-semibold text-base shadow-lg">
@@ -237,7 +245,7 @@
     {{-- Tata Cara Pengajuan --}}
     <div class="relative z-10 max-w-6xl mx-auto px-6 pb-20">
         <div class="text-center mb-10">
-            <p class="text-xs text-polri-red tracking-widest uppercase mb-2">Panduan Singkat</p>
+            <p class="text-2xl text-polri-red tracking-widest uppercase mb-2">Panduan Singkat</p>
             <h2 class="text-2xl md:text-3xl font-bold text-white">Tata Cara Pengajuan Anggaran</h2>
         </div>
 

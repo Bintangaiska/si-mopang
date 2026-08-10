@@ -20,6 +20,13 @@
                     radial-gradient(circle at 85% 90%, rgba(191,195,200,0.08), transparent 35%),
                     linear-gradient(135deg, #111827 0%, #1F2937 50%, #374151 100%);
             }
+
+            .justify-title {
+                    display: block;
+                    text-align: justify;
+                    text-align-last: justify;
+                    width: 100%;
+            }
         </style>
     </head>
     <body class="font-sans antialiased app-bg min-h-screen">
