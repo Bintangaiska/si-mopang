@@ -19,8 +19,8 @@
                 <div class="hidden lg:flex items-center gap-1">
                     @if(auth()->user()->role === 'super_admin')
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('dashboard') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Dashboard</a>
-                        <a href="#" class="px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white transition">Manajemen User</a>
-                        <a href="#" class="px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white transition">Pengaturan</a>
+                        <a href="{{ route('user-management.index') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('user-management.*') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Manajemen User</a>
+                        <a href="{{ route('settings.pagu') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('settings.*') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Manajemen Pagu</a>
                     @elseif(auth()->user()->role === 'admin')
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('dashboard') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Dashboard</a>
                         <a href="{{ route('pengajuan.index') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('pengajuan.index') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Manajemen Pengajuan</a>
@@ -81,8 +81,8 @@
         <div class="pt-2 pb-3 space-y-1 px-2">
             @if(auth()->user()->role === 'super_admin')
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Dashboard</a>
-                <a href="#" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen User</a>
-                <a href="#" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Pengaturan</a>
+                <a href="{{ route('user-management.index') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen User</a>
+                <a href="{{ route('settings.pagu') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Pengaturan</a>
             @elseif(auth()->user()->role === 'admin')
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Dashboard</a>
                 <a href="{{ route('pengajuan.index') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen Pengajuan</a>

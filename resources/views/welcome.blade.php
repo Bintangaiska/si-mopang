@@ -116,7 +116,7 @@
                 MASUK KE SISTEM
             </a>
         @endguest
-        
+
         <!-- <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
 
         <div class="glass-card rounded-xl p-4">
@@ -132,8 +132,8 @@
         <div class="glass-card rounded-xl p-4">
             <p class="text-gray-400 text-xs">Penyerapan Anggaran</p>
             <p class="text-2xl font-bold text-red-500">87%</p>
-        </div> 
-</div> --> 
+        </div>
+</div> -->
     {{-- Hero --}}
     <div class="relative z-10 max-w-7xl mx-auto px-6 py-24">
 
@@ -179,24 +179,48 @@
 
                         <!-- Container Foto: Kotak gelap/background dihilangkan (transparan) -->
                         <div class="w-full h-[400px] flex justify-center items-end mb-6 overflow-hidden">
+
+                             <!-- Glow Blur -->
+                            <div class="absolute bottom-0 left-1/2 -translate-x-1/2
+                                        w-64 h-24
+                                        bg-white/10
+                                        blur-3xl
+                                        rounded-full
+                                        z-10">
+                            </div>
+
                             <img
-                                src="{{ asset('images/kabid2.PNG') }}"
+                                src="{{ asset('images/kabidNew.png') }}"
                                 alt="Kabid TIK"
-                                class="w-full h-full object-cover object-top block">
+                                class="w-full h-full object-cover object-top block"
+                                style="
+                                    -webkit-mask-image: linear-gradient(
+                                        to bottom,
+                                        rgba(0,0,0,1) 0%,
+                                        rgba(0,0,0,1) 65%,
+                                        rgba(0,0,0,0.7) 80%,
+                                        rgba(0,0,0,0) 100%
+                                    );
+                                    mask-image: linear-gradient(
+                                        to bottom,
+                                        rgba(0,0,0,1) 0%,
+                                        rgba(0,0,0,1) 65%,
+                                        rgba(0,0,0,0.7) 80%,
+                                        rgba(0,0,0,0) 100%
+                                    );
+                                ">
+
                         </div>
 
                         <!-- Info Teks -->
                         <div class="border-t border-white/10 pt-6 w-full text-center mt-auto">
                             <h3 class="text-white font-bold text-2xl">
-                                Kombes Pol. [Nama Kabid]
+                                Kombes Pol. Agusman Gurning, S.H., S.I.K, M.H.
                             </h3>
                             <p class="text-gray-400 text-sm mt-2 leading-relaxed">
                                 Kepala Bidang Teknologi Informasi dan Komunikasi
                                 <br>
                                 Polda Jawa Timur
-                            </p>
-                            <p class="italic text-gray-300 text-xs text-center mt-5 pt-5 border-t border-white/10">
-                                "Transformasi digital pengelolaan anggaran untuk meningkatkan efektivitas, akuntabilitas, dan kualitas pelayanan organisasi."
                             </p>
                         </div>
 
@@ -208,7 +232,63 @@
 
         </div>
 
-    </div>    
+    </div>
+
+    {{-- Tata Cara Pengajuan --}}
+    <div class="relative z-10 max-w-6xl mx-auto px-6 pb-20">
+        <div class="text-center mb-10">
+            <p class="text-xs text-polri-red tracking-widest uppercase mb-2">Panduan Singkat</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">Tata Cara Pengajuan Anggaran</h2>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="flex gap-4">
+                    <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">1</span>
+                    <div>
+                        <p class="text-white font-medium text-sm">Masuk ke Akun</p>
+                        <p class="text-polri-silver-dark text-sm mt-1">Login sesuai Satker dan Ur Anda masing-masing.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">2</span>
+                    <div>
+                        <p class="text-white font-medium text-sm">Isi Formulir</p>
+                        <p class="text-polri-silver-dark text-sm mt-1">Lengkapi jumlah anggaran yang diajukan pada menu Ajukan Anggaran.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">3</span>
+                    <div>
+                        <p class="text-white font-medium text-sm">Unggah Dokumen</p>
+                        <p class="text-polri-silver-dark text-sm mt-1">Sertakan Laporan Rencana Kebutuhan Anggaran & Laporan Perwabku bulan lalu.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">4</span>
+                    <div>
+                        <p class="text-white font-medium text-sm">Verifikasi Admin</p>
+                        <p class="text-polri-silver-dark text-sm mt-1">Pengajuan diproses dan diverifikasi oleh Subbagrenmin.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">5</span>
+                    <div>
+                        <p class="text-white font-medium text-sm">Pantau Status</p>
+                        <p class="text-polri-silver-dark text-sm mt-1">Cek perkembangan pengajuan melalui menu Riwayat Pengajuan.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">6</span>
+                    <div>
+                        <p class="text-white font-medium text-sm">Batas Waktu</p>
+                        <p class="text-polri-silver-dark text-sm mt-1">Pengajuan dilakukan sebelum tanggal 5 bulan berikutnya.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     {{-- Fitur --}}
     <div class="relative z-10 max-w-6xl mx-auto px-6 pb-24">

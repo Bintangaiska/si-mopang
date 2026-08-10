@@ -6,7 +6,7 @@
     <nav class="flex-1 px-2 py-4 space-y-1">
         @if(auth()->user()->role === 'super_admin')
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-700">Dashboard</a>
-            <a href="#" class="block px-4 py-2 rounded hover:bg-gray-700">Manajemen User</a>
+            <a href="{{ route('user-management.index') }}" class="block px-4 py-2 rounded hover:bg-gray-700">Manajemen User</a>
             <a href="#" class="block px-4 py-2 rounded hover:bg-gray-700">Pengaturan</a>
         @elseif(auth()->user()->role === 'admin')
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-700">Dashboard</a>

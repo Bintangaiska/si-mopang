@@ -37,7 +37,7 @@
                     <div class="simopang-card p-5 border-l-4 border-l-polri-silver">
                         <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Jumlah Satker</p>
                         <p class="text-xl font-bold text-white mt-1">{{ count($unitKerja) }}</p>
-                        <p class="text-xs text-polri-silver-dark mt-2">Subbid & Subbagrenmin</p>
+                        <p class="text-xs text-polri-silver-dark mt-2">3 Satuan Kerja aktif</p>
                     </div>
                     <div class="simopang-card p-5 border-l-4 border-l-polri-red">
                         <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Persentase Penyerapan</p>
@@ -55,20 +55,39 @@
                     </div>
                 </div>
 
-                {{-- Filter (UI only, dummy) --}}
+                {{-- Filter --}}
                 <div class="simopang-card p-5">
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                        <select class="simopang-input text-sm px-3 py-2"><option>Semua Wilayah</option><option>Polda Jatim</option></select>
-                        <select class="simopang-input text-sm px-3 py-2"><option>Semua Polres</option><option>Bid TIK</option></select>
-                        <select class="simopang-input text-sm px-3 py-2"><option>2026</option><option>2025</option></select>
-                        <select class="simopang-input text-sm px-3 py-2"><option>Semua Bulan</option><option>Juli</option><option>Juni</option></select>
-                        <select class="simopang-input text-sm px-3 py-2"><option>Semua Status</option><option>Selesai</option><option>Diproses</option><option>Ditolak</option></select>
-                    </div>
-                    <div class="flex gap-2 mt-3">
-                        <button class="simopang-btn-primary text-sm">Filter</button>
-                        <button class="px-4 py-2 text-sm border border-polri-dark-light text-polri-silver rounded-lg hover:bg-white/5">Reset</button>
-                    </div>
-                    <p class="text-xs text-polri-silver-dark mt-2">*Filter masih tampilan contoh, belum terhubung ke data.</p>
+                    <form method="GET" action="{{ route('dashboard') }}" class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                        <select name="satker" class="simopang-input text-sm px-3 py-2">
+                            <option value="">Semua Subsatker</option>
+                            @foreach(array_keys(config('unitkerja.satker')) as $sk)
+                                <option value="{{ $sk }}" {{ $satker === $sk ? 'selected' : '' }}>{{ $sk }}</option>
+                            @endforeach
+                        </select>
+                        <select name="tahun" class="simopang-input text-sm px-3 py-2">
+                            <option value="">Semua Tahun</option>
+                            @foreach($tahunList as $thn)
+                                <option value="{{ $thn }}" {{ $tahun === $thn ? 'selected' : '' }}>{{ $thn }}</option>
+                            @endforeach
+                        </select>
+                        <select name="bulan" class="simopang-input text-sm px-3 py-2">
+                            <option value="">Semua Bulan</option>
+                            @php $bulanNama = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; @endphp
+                            @for($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}" {{ $bulan == $i ? 'selected' : '' }}>{{ $bulanNama[$i-1] }}</option>
+                            @endfor
+                        </select>
+                        <select name="status" class="simopang-input text-sm px-3 py-2">
+                            <option value="">Semua Status</option>
+                            @foreach(['Selesai','Diproses','Ditolak'] as $s)
+                                <option value="{{ $s }}" {{ $status === $s ? 'selected' : '' }}>{{ $s }}</option>
+                            @endforeach
+                        </select>
+                        <div class="col-span-2 md:col-span-5 flex gap-2">
+                            <button type="submit" class="simopang-btn-primary text-sm">Filter</button>
+                            <a href="{{ route('dashboard') }}" class="px-4 py-2 text-sm border border-polri-dark-light text-polri-silver rounded-lg hover:bg-white/5">Reset</a>
+                        </div>
+                    </form>
                 </div>
 
                 {{-- Charts --}}
@@ -112,8 +131,8 @@
                         <h3 class="text-sm font-semibold text-white">Data Monitoring Anggaran</h3>
                         <div class="flex gap-2">
                             <input type="text" id="searchTable" placeholder="Cari unit kerja..." class="simopang-input text-sm px-3 py-1.5">
-                            <button onclick="alert('Export PDF akan tersedia setelah data terhubung ke database.')" class="px-3 py-1.5 text-xs border border-polri-dark-light rounded-lg text-polri-silver hover:bg-white/5">Export PDF</button>
-                            <button onclick="alert('Export Excel akan tersedia setelah data terhubung ke database.')" class="px-3 py-1.5 text-xs border border-polri-dark-light rounded-lg text-polri-silver hover:bg-white/5">Export Excel</button>
+                            <a href="{{ route('rekap.export-pdf') }}" class="px-3 py-1.5 text-xs border border-polri-red rounded-lg text-polri-red hover:bg-polri-red/10">Export PDF</a>
+                            <a href="{{ route('rekap.export-excel') }}" class="px-3 py-1.5 text-xs border border-polri-dark-light rounded-lg text-polri-silver hover:bg-white/5">Export Excel</a>
                         </div>
                     </div>
                     <table class="w-full text-sm text-left" id="monitoringTable">
@@ -128,19 +147,19 @@
                         <tbody>
                             @foreach($pengajuanTerbaru as $item)
                             <tr class="border-b border-polri-dark-light table-row">
-                                <td class="py-2 text-polri-silver">{{ $item['unit'] }}</td>
-                                <td class="py-2 text-polri-silver">{{ $item['tanggal'] }}</td>
-                                <td class="py-2 text-polri-silver">Rp {{ number_format($item['jumlah'], 0, ',', '.') }}</td>
+                                <td class="py-2 text-polri-silver">{{ $item->unit_kerja }}<span class="block text-xs text-polri-silver-dark">{{ $item->urusan ?? '' }}</span></td>
+                                <td class="py-2 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
+                                <td class="py-2 text-polri-silver">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
                                 <td class="py-2">
                                     @php
-                                        $warna = match($item['status']) {
+                                        $warna = match($item->status) {
                                             'Selesai' => 'bg-green-500/20 text-green-400',
                                             'Diproses' => 'bg-yellow-500/20 text-yellow-400',
                                             'Ditolak' => 'bg-red-500/20 text-red-400',
                                             default => 'bg-gray-500/20 text-gray-300',
                                         };
                                     @endphp
-                                    <span class="px-2 py-1 rounded text-xs {{ $warna }}">{{ $item['status'] }}</span>
+                                    <span class="px-2 py-1 rounded text-xs {{ $warna }}">{{ $item->status }}</span>
                                 </td>
                             </tr>
                             @endforeach
@@ -154,46 +173,67 @@
                 <div class="relative overflow-hidden rounded-xl bg-polri-dark border border-polri-dark-light p-5">
                     <img src="{{ asset('images/logo-tikpolri.png') }}" class="absolute -right-6 -top-6 w-40 opacity-10 pointer-events-none" alt="">
                     <p class="text-white font-semibold relative z-10">Selamat datang di Dashboard Admin!</p>
-                    <p class="text-sm text-polri-silver-dark relative z-10">Anda bertugas memproses pengajuan anggaran dari tiap unit kerja.</p>
+                    <p class="text-sm text-polri-silver-dark relative z-10">Anda bertugas memproses pengajuan anggaran dari <span class="text-white font-medium">{{ $user->unit_kerja ?? '-' }}</span>.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="simopang-card p-5 border-l-4 border-l-yellow-500">
-                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Pengajuan Menunggu Diproses</p>
-                        <p class="text-2xl font-semibold text-yellow-400 mt-1">{{ count($antrianDiproses) }}</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="simopang-card p-5 border-l-4 border-l-polri-red">
+                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Total Anggaran</p>
+                        <p class="text-xl font-bold text-white mt-1">Rp {{ number_format($paguAdmin, 0, ',', '.') }}</p>
                     </div>
-                    <div class="simopang-card p-5">
-                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Total Nilai Diajukan Bulan Ini</p>
-                        <p class="text-2xl font-semibold text-white mt-1">
-                            Rp {{ number_format(collect($antrianDiproses)->sum('jumlah'), 0, ',', '.') }}
-                        </p>
+                    <div class="simopang-card p-5 border-l-4 border-l-green-500">
+                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Anggaran Terserap</p>
+                        <p class="text-xl font-bold text-green-400 mt-1">Rp {{ number_format($totalTerserapAdmin, 0, ',', '.') }}</p>
+                    </div>
+                    <div class="simopang-card p-5 border-l-4 border-l-gray-500">
+                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Sisa Anggaran</p>
+                        <p class="text-xl font-bold text-white mt-1">Rp {{ number_format($sisaPaguAdmin, 0, ',', '.') }}</p>
                     </div>
                 </div>
 
                 <div class="simopang-card p-5">
-                    <h3 class="text-lg font-semibold text-white mb-4">Antrian Perlu Diproses</h3>
-                    <table class="w-full text-sm text-left">
+                    <div class="flex flex-col sm:flex-row justify-between gap-3 mb-4">
+                        <h3 class="text-sm font-semibold text-white">Data Monitoring Anggaran</h3>
+                        <div class="flex gap-2">
+                            <input type="text" id="searchTableAdmin" placeholder="Cari urusan..." class="simopang-input text-sm px-3 py-1.5">
+                            <a href="{{ route('rekap.export-excel-admin') }}" class="px-3 py-1.5 text-xs border border-green-600 rounded-lg text-green-400 hover:bg-green-600/10">Export Excel</a>
+                        </div>
+                    </div>
+                    <table class="w-full text-sm text-left" id="monitoringTableAdmin">
                         <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                             <tr>
                                 <th class="py-2">Unit Kerja</th>
                                 <th class="py-2">Tanggal</th>
                                 <th class="py-2">Jumlah</th>
-                                <th class="py-2">Aksi</th>
+                                <th class="py-2">Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($antrianDiproses as $item)
-                            <tr class="border-b border-polri-dark-light">
-                                <td class="py-2 text-polri-silver">{{ $item['unit'] }}</td>
-                                <td class="py-2 text-polri-silver">{{ $item['tanggal'] }}</td>
-                                <td class="py-2 text-polri-silver">Rp {{ number_format($item['jumlah'], 0, ',', '.') }}</td>
+                            @forelse($pengajuanAdmin as $item)
+                            <tr class="border-b border-polri-dark-light table-row">
+                                <td class="py-2 text-polri-silver">{{ $item->unit_kerja }}<span class="block text-xs text-polri-silver-dark">{{ $item->urusan ?? '' }}</span></td>
+                                <td class="py-2 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
+                                <td class="py-2 text-polri-silver">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
                                 <td class="py-2">
-                                    <a href="{{ route('pengajuan.index') }}" class="text-polri-red hover:underline">Proses</a>
+                                    @php
+                                        $warna = match($item->status) {
+                                            'Selesai' => 'bg-green-500/20 text-green-400',
+                                            'Diproses' => 'bg-yellow-500/20 text-yellow-400',
+                                            'Ditolak' => 'bg-red-500/20 text-red-400',
+                                            default => 'bg-gray-500/20 text-gray-300',
+                                        };
+                                    @endphp
+                                    <span class="px-2 py-1 rounded text-xs {{ $warna }}">{{ $item->status }}</span>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="4" class="py-8 text-center text-polri-silver-dark">Belum ada pengajuan anggaran untuk satker ini.</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
+                    <p class="text-xs text-polri-silver-dark mt-3" id="tableInfoAdmin"></p>
                 </div>
 
             @else
@@ -219,6 +259,52 @@
                     </div>
                 </div>
 
+                {{-- Info Penting & Tata Cara Pengajuan --}}
+                <div class="simopang-card p-6 border-l-4 border-l-polri-red">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-polri-red shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Penting!</p>
+                            <p class="text-sm text-polri-silver-dark mt-1">
+                                Harap melakukan pengajuan dana sebelum tanggal <span class="text-polri-red font-medium">5 bulan depan</span>.
+                                Sertakan Surat Pengajuan Dana beserta Surat Pertanggungjawaban dana bulan lalu.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-5 border-t border-polri-dark-light">
+                        <p class="text-sm font-semibold text-white mb-3">Tata Cara Pengajuan Dana</p>
+                        <ol class="space-y-2">
+                            <li class="flex items-start gap-3 text-sm text-polri-silver">
+                                <span class="shrink-0 w-5 h-5 rounded-full bg-polri-red/20 text-polri-red text-xs flex items-center justify-center font-medium">1</span>
+                                Masuk ke akun Anda sesuai SubSatker dan Urusan
+                            </li>
+                            <li class="flex items-start gap-3 text-sm text-polri-silver">
+                                <span class="shrink-0 w-5 h-5 rounded-full bg-polri-red/20 text-polri-red text-xs flex items-center justify-center font-medium">2</span>
+                                Pilih menu <span class="text-white">Ajukan Anggaran</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-sm text-polri-silver">
+                                <span class="shrink-0 w-5 h-5 rounded-full bg-polri-red/20 text-polri-red text-xs flex items-center justify-center font-medium">3</span>
+                                Isi formulir yang tersedia dengan lengkap
+                            </li>
+                            <li class="flex items-start gap-3 text-sm text-polri-silver">
+                                <span class="shrink-0 w-5 h-5 rounded-full bg-polri-red/20 text-polri-red text-xs flex items-center justify-center font-medium">4</span>
+                                Unggah berkas yang dibutuhkan (Laporan Rencana Kebutuhan Anggaran & Laporan Perwabku Bulan Lalu)
+                            </li>
+                            <li class="flex items-start gap-3 text-sm text-polri-silver">
+                                <span class="shrink-0 w-5 h-5 rounded-full bg-polri-red/20 text-polri-red text-xs flex items-center justify-center font-medium">5</span>
+                                Pantau status melalui menu <span class="text-white">Riwayat Pengajuan</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-sm text-polri-silver">
+                                <span class="shrink-0 w-5 h-5 rounded-full bg-polri-red/20 text-polri-red text-xs flex items-center justify-center font-medium">6</span>
+                                Cek status secara berkala untuk mengetahui perkembangan pengajuan
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
                 <div class="simopang-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
                         <h3 class="text-lg font-semibold text-white">Butuh mengajukan anggaran bulan ini?</h3>
@@ -240,11 +326,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(array_slice($pengajuanTerbaru, 0, 2) as $item)
+                            @foreach($pengajuanUserTerbaru->take(2) as $item)
                             <tr class="border-b border-polri-dark-light">
-                                <td class="py-2 text-polri-silver">{{ $item['tanggal'] }}</td>
-                                <td class="py-2 text-polri-silver">Rp {{ number_format($item['jumlah'], 0, ',', '.') }}</td>
-                                <td class="py-2 text-polri-silver">{{ $item['status'] }}</td>
+                                <td class="py-2 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
+                                <td class="py-2 text-polri-silver">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                                <td class="py-2 text-polri-silver">{{ $item->status }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -332,6 +418,26 @@
         });
 
         updateInfo();
+
+        const searchInputAdmin = document.getElementById('searchTableAdmin');
+        const rowsAdmin = document.querySelectorAll('#monitoringTableAdmin .table-row');
+        const tableInfoAdmin = document.getElementById('tableInfoAdmin');
+
+        function updateInfoAdmin() {
+            const visible = Array.from(rowsAdmin).filter(r => r.style.display !== 'none').length;
+            tableInfoAdmin.textContent = `Menampilkan ${visible} dari ${rowsAdmin.length} data`;
+        }
+
+        searchInputAdmin.addEventListener('input', function () {
+            const keyword = this.value.toLowerCase();
+            rowsAdmin.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(keyword) ? '' : 'none';
+            });
+            updateInfoAdmin();
+        });
+
+        updateInfoAdmin();
     </script>
     @endif
 </x-app-layout>

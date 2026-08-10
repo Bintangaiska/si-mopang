@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -20,7 +21,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('auth.register', [
+            'unitKerjaList' => config('unitkerja.satker'),
+        ]);
     }
 
     /**
@@ -34,12 +37,16 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'unit_kerja' => ['required', 'string', Rule::in(array_keys(config('unitkerja.satker')))],
+            'urusan' => ['required', 'string', Rule::in(collect(config('unitkerja.satker'))->flatten()->all())],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'unit_kerja' => $request->unit_kerja,
+            'urusan' => $request->urusan,
         ]);
 
         event(new Registered($user));

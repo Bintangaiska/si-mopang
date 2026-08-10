@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaguAnggaran;
+use App\Models\PengajuanAnggaran;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -10,50 +12,119 @@ class DashboardController extends Controller
     {
         $role = $request->user()->role;
 
-        $unitKerja = [
-            ['nama' => 'Subbid Tekkom', 'pagu' => 50000000, 'sisa_pagu' => 32000000, 'realisasi' => 18000000],
-            ['nama' => 'Subbid Tekinfo', 'pagu' => 40000000, 'sisa_pagu' => 15500000, 'realisasi' => 24500000],
-            ['nama' => 'Subbid Wassidik', 'pagu' => 35000000, 'sisa_pagu' => 35000000, 'realisasi' => 0],
-            ['nama' => 'Subbagrenmin', 'pagu' => 25000000, 'sisa_pagu' => 8000000, 'realisasi' => 17000000],
-        ];
+        $tahun = $request->input('tahun');
+        $bulan = $request->input('bulan');
+        $status = $request->input('status');
+        $satker = $request->input('satker');
 
-        $totalPagu = collect($unitKerja)->sum('pagu');
-        $totalRealisasi = collect($unitKerja)->sum('realisasi');
-        $totalSisa = collect($unitKerja)->sum('sisa_pagu');
+        $paguMap = PaguAnggaran::paguMap();
+
+        $unitKerja = collect($paguMap)->map(function ($pagu, $nama) use ($tahun, $bulan) {
+            $realisasi = PengajuanAnggaran::where('unit_kerja', $nama)
+                ->where('status', 'Selesai')
+                ->when($tahun, fn ($q) => $q->whereYear('tanggal_pengajuan', $tahun))
+                ->when($bulan, fn ($q) => $q->whereMonth('tanggal_pengajuan', $bulan))
+                ->sum('jumlah');
+
+            return [
+                'nama' => $nama,
+                'pagu' => $pagu,
+                'sisa_pagu' => max($pagu - $realisasi, 0),
+                'realisasi' => $realisasi,
+            ];
+        })->when($satker, fn ($c) => $c->filter(fn ($item) => $item['nama'] === $satker))->values();
+
+        $totalPagu = $unitKerja->sum('pagu');
+        $totalRealisasi = $unitKerja->sum('realisasi');
+        $totalSisa = $unitKerja->sum('sisa_pagu');
         $persenSerap = $totalPagu > 0 ? round(($totalRealisasi / $totalPagu) * 100, 1) : 0;
 
-        $trenBulanan = [
-            ['bulan' => 'Feb', 'pagu' => 150000000, 'realisasi' => 12000000],
-            ['bulan' => 'Mar', 'pagu' => 150000000, 'realisasi' => 28000000],
-            ['bulan' => 'Apr', 'pagu' => 150000000, 'realisasi' => 41000000],
-            ['bulan' => 'Mei', 'pagu' => 150000000, 'realisasi' => 47000000],
-            ['bulan' => 'Jun', 'pagu' => 150000000, 'realisasi' => 55000000],
-            ['bulan' => 'Jul', 'pagu' => 150000000, 'realisasi' => 59500000],
-        ];
-
-        $ranking = collect($unitKerja)->map(function ($u) {
+        $ranking = $unitKerja->map(function ($u) {
             $u['persen'] = $u['pagu'] > 0 ? round(($u['realisasi'] / $u['pagu']) * 100, 1) : 0;
             return $u;
         })->sortByDesc('persen')->values();
 
-        $antrianDiproses = [
-            ['unit' => 'Subbid Tekkom', 'tanggal' => '20 Jul 2026', 'jumlah' => 10000000],
-            ['unit' => 'Subbid Tekinfo', 'tanggal' => '22 Jul 2026', 'jumlah' => 7500000],
-        ];
+        $bulanNama = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        $trenBulanan = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $m = now()->subMonths($i);
+            $realisasi = PengajuanAnggaran::where('status', 'Selesai')
+                ->when($satker, fn ($q) => $q->where('unit_kerja', $satker))
+                ->whereYear('tanggal_pengajuan', $m->year)
+                ->whereMonth('tanggal_pengajuan', $m->month)
+                ->sum('jumlah');
 
-        $sisaPaguUser = 45000000;
-        $paguUser = 60000000;
+            $trenBulanan[] = [
+                'bulan' => $bulanNama[$m->month - 1],
+                'pagu' => $totalPagu,
+                'realisasi' => $realisasi,
+            ];
+        }
 
-        $pengajuanTerbaru = [
-            ['unit' => 'Subbid Tekkom', 'tanggal' => '20 Jul 2026', 'jumlah' => 10000000, 'status' => 'Selesai'],
-            ['unit' => 'Subbid Tekinfo', 'tanggal' => '22 Jul 2026', 'jumlah' => 7500000, 'status' => 'Diproses'],
-            ['unit' => 'Subbagrenmin', 'tanggal' => '23 Jul 2026', 'jumlah' => 5000000, 'status' => 'Ditolak'],
-            ['unit' => 'Subbid Wassidik', 'tanggal' => '18 Jul 2026', 'jumlah' => 12000000, 'status' => 'Selesai'],
-            ['unit' => 'Subbid Tekkom', 'tanggal' => '15 Jul 2026', 'jumlah' => 6000000, 'status' => 'Selesai'],
-            ['unit' => 'Subbid Tekinfo', 'tanggal' => '12 Jul 2026', 'jumlah' => 8500000, 'status' => 'Ditolak'],
-        ];
+        $pengajuanQuery = fn ($q) => $q
+            ->when($tahun, fn ($qq) => $qq->whereYear('tanggal_pengajuan', $tahun))
+            ->when($bulan, fn ($qq) => $qq->whereMonth('tanggal_pengajuan', $bulan));
 
-        $statusDistribusi = collect($pengajuanTerbaru)->countBy('status');
+        $antrianDiproses = PengajuanAnggaran::with('user')
+            ->where('status', 'Diproses')
+            ->when($satker, fn ($q) => $q->where('unit_kerja', $satker))
+            ->when($tahun, fn ($q) => $q->whereYear('tanggal_pengajuan', $tahun))
+            ->when($bulan, fn ($q) => $q->whereMonth('tanggal_pengajuan', $bulan))
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pengajuanTerbaru = PengajuanAnggaran::with('user')
+            ->when($satker, fn ($q) => $q->where('unit_kerja', $satker))
+            ->when($tahun, fn ($q) => $q->whereYear('tanggal_pengajuan', $tahun))
+            ->when($bulan, fn ($q) => $q->whereMonth('tanggal_pengajuan', $bulan))
+            ->when($status, fn ($q) => $q->where('status', $status))
+            ->orderBy('tanggal_pengajuan', 'desc')
+            ->take(10)
+            ->get();
+
+        $statusDistribusi = PengajuanAnggaran::query()
+            ->when($satker, fn ($q) => $q->where('unit_kerja', $satker))
+            ->when($tahun, fn ($q) => $q->whereYear('tanggal_pengajuan', $tahun))
+            ->when($bulan, fn ($q) => $q->whereMonth('tanggal_pengajuan', $bulan))
+            ->get()
+            ->countBy('status');
+
+        $tahunList = PengajuanAnggaran::selectRaw('YEAR(tanggal_pengajuan) as thn')
+            ->distinct()
+            ->orderByDesc('thn')
+            ->pluck('thn')
+            ->map(fn ($t) => (string) $t);
+
+        if ($tahunList->isEmpty()) {
+            $tahunList = collect([(string) now()->year]);
+        }
+
+        $user = $request->user();
+        $totalDisetujui = PengajuanAnggaran::where('unit_kerja', $user->unit_kerja)
+            ->where('status', 'Selesai')
+            ->sum('jumlah');
+
+        $paguUser = $paguMap[$user->unit_kerja] ?? 0;
+
+        $sisaPaguUser = $paguUser - $totalDisetujui;
+        if ($sisaPaguUser < 0) $sisaPaguUser = 0;
+
+        $pengajuanUserTerbaru = PengajuanAnggaran::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Admin-specific: data for their satker
+        $paguAdmin = $paguMap[$user->unit_kerja] ?? 0;
+        $totalTerserapAdmin = PengajuanAnggaran::where('unit_kerja', $user->unit_kerja)
+            ->where('status', 'Selesai')
+            ->sum('jumlah');
+        $sisaPaguAdmin = $paguAdmin - $totalTerserapAdmin;
+        if ($sisaPaguAdmin < 0) $sisaPaguAdmin = 0;
+        $pengajuanAdmin = PengajuanAnggaran::with('user')
+            ->where('unit_kerja', $user->unit_kerja)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('dashboard', [
             'role' => $role,
@@ -69,6 +140,16 @@ class DashboardController extends Controller
             'paguUser' => $paguUser,
             'pengajuanTerbaru' => $pengajuanTerbaru,
             'statusDistribusi' => $statusDistribusi,
+            'pengajuanUserTerbaru' => $pengajuanUserTerbaru,
+            'tahunList' => $tahunList,
+            'tahun' => $tahun,
+            'bulan' => $bulan,
+            'status' => $status,
+            'satker' => $satker,
+            'paguAdmin' => $paguAdmin,
+            'totalTerserapAdmin' => $totalTerserapAdmin,
+            'sisaPaguAdmin' => $sisaPaguAdmin,
+            'pengajuanAdmin' => $pengajuanAdmin,
         ]);
     }
 }

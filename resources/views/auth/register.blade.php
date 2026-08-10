@@ -26,6 +26,43 @@
         </div>
 
         <div>
+            <label for="unit_kerja" class="block text-xs text-[#BFC3C8] mb-1"> Sub Satuan Kerja</label>
+            <select id="unit_kerja" name="unit_kerja" required
+                onchange="updateUrusan('unit_kerja', 'urusan')"
+                class="input-glass w-full rounded-lg px-4 py-2.5 text-sm">
+                <option value="" disabled {{ old('unit_kerja') ? '' : 'selected' }}>Pilih sub satuan kerja</option>
+                @foreach($unitKerjaList as $satker => $urusanList)
+                    <option value="{{ $satker }}" {{ old('unit_kerja') === $satker ? 'selected' : '' }}>{{ $satker }}</option>
+                @endforeach
+            </select>
+            @error('unit_kerja')
+                <p class="text-xs text-red-400 mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div>
+            <label for="urusan" class="block text-xs text-[#BFC3C8] mb-1">Nama Urusan</label>
+            <select id="urusan" name="urusan" required
+                class="input-glass w-full rounded-lg px-4 py-2.5 text-sm">
+                <option value="" disabled selected>Pilih sub satuan kerja terlebih dahulu</option>
+            </select>
+            @error('urusan')
+                <p class="text-xs text-red-400 mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <script>
+            window.urusanMap = @json($unitKerjaList);
+            window.preselectUrusan = @json(old('urusan'));
+            document.addEventListener('DOMContentLoaded', function () {
+                const satker = document.getElementById('unit_kerja');
+                if (satker.value) {
+                    updateUrusan('unit_kerja', 'urusan');
+                }
+            });
+        </script>
+
+        <div>
             <label for="password" class="block text-xs text-[#BFC3C8] mb-1">Kata Sandi</label>
             <div class="relative">
                 <input id="password" type="password" name="password" required autocomplete="new-password"
@@ -77,6 +114,17 @@
                 input.type = 'password';
                 label.textContent = 'Lihat';
             }
+        }
+
+        function updateUrusan(satkerId, urusanId) {
+            const satker = document.getElementById(satkerId);
+            const urusan = document.getElementById(urusanId);
+            const list = window.urusanMap[satker.value] || [];
+            urusan.innerHTML = '<option value="" disabled selected>Pilih nama urusan</option>'
+                + list.map(function (u) {
+                    const sel = window.preselectUrusan === u ? 'selected' : '';
+                    return '<option value="' + u + '" ' + sel + '>' + u + '</option>';
+                }).join('');
         }
     </script>
 </x-guest-layout>

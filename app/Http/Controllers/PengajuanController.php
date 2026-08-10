@@ -2,71 +2,110 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaguAnggaran;
+use App\Models\PengajuanAnggaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class PengajuanController extends Controller
 {
-    // Data dummy sementara, nanti diganti tabel pengajuan_anggaran asli
-    private function dummyData()
-    {
-        return [
-            [
-                'id' => 1,
-                'nama_subsatker' => 'Subbid Tekkom',
-                'unit' => 'Subbid Tekkom',
-                'tanggal' => '20 Jul 2026',
-                'jumlah' => 10000000,
-                'status' => 'Diproses',
-                'catatan' => null,
-            ],
-            [
-                'id' => 2,
-                'nama_subsatker' => 'Subbid Tekinfo',
-                'unit' => 'Subbid Tekinfo',
-                'tanggal' => '22 Jul 2026',
-                'jumlah' => 7500000,
-                'status' => 'Diproses',
-                'catatan' => null,
-            ],
-            [
-                'id' => 3,
-                'nama_subsatker' => 'Subbagrenmin',
-                'unit' => 'Subbagrenmin',
-                'tanggal' => '23 Jul 2026',
-                'jumlah' => 5000000,
-                'status' => 'Selesai',
-                'catatan' => 'Pengajuan disetujui, dana sudah dicairkan.',
-            ],
-        ];
-    }
-
     public function index()
     {
-        $pengajuan = $this->dummyData();
+        $user = auth()->user();
+        $query = PengajuanAnggaran::with('user');
+
+        if ($user->role === 'admin' && $user->unit_kerja) {
+            $query->where('unit_kerja', $user->unit_kerja);
+        }
+
+        $pengajuan = $query->orderBy('created_at', 'desc')->get();
 
         return view('pengajuan.index', compact('pengajuan'));
     }
 
+    public function create()
+    {
+        $paguUnit = collect(PaguAnggaran::paguMap())->map(function ($pagu, $unit) {
+            $disetujui = PengajuanAnggaran::where('unit_kerja', $unit)
+                ->where('status', 'Selesai')
+                ->sum('jumlah');
+            return [
+                'unit' => $unit,
+                'pagu' => $pagu,
+                'sisa' => max($pagu - $disetujui, 0),
+            ];
+        })->values();
+
+        return view('pengajuan.form', [
+            'sisaPaguPerUnit' => $paguUnit,
+            'unitKerjaList' => config('unitkerja.satker'),
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'unit_kerja' => ['required', 'string', Rule::in(array_keys(config('unitkerja.satker')))],
+            'urusan' => ['required', 'string', Rule::in(collect(config('unitkerja.satker'))->flatten()->all())],
+            'tanggal_pengajuan' => ['required', 'date'],
+            'jumlah_pengajuan' => ['required', 'numeric', 'min:1'],
+            'rka' => ['required', 'file', 'mimes:pdf', 'max:10240'],
+            'perwabku' => ['required', 'file', 'mimes:pdf', 'max:10240'],
+        ]);
+
+        $fileRka = $request->file('rka')->store('pengajuan/rka', 'public');
+        $filePerwabku = $request->file('perwabku')->store('pengajuan/perwabku', 'public');
+
+        PengajuanAnggaran::create([
+            'user_id' => $user->id,
+            'unit_kerja' => $request->unit_kerja,
+            'urusan' => $request->urusan,
+            'tanggal_pengajuan' => $request->tanggal_pengajuan,
+            'jumlah' => $request->jumlah_pengajuan,
+            'file_rka' => $fileRka,
+            'file_perwabku' => $filePerwabku,
+            'status' => 'Diproses',
+        ]);
+
+        return redirect()->route('pengajuan.riwayat')
+            ->with('success', 'Pengajuan anggaran berhasil dikirim dan sedang diproses.');
+    }
+
     public function show($id)
     {
-        $pengajuan = collect($this->dummyData())->firstWhere('id', (int) $id);
+        $pengajuan = PengajuanAnggaran::with('user')->findOrFail($id);
 
         return view('pengajuan.detail', compact('pengajuan'));
     }
 
-        public function create()
-    {
-        // Sisa pagu unit kerja user yang login (dummy dulu)
-        $sisaPagu = 45000000;
-
-        return view('pengajuan.form', compact('sisaPagu'));
-    }
-
     public function riwayat()
     {
-        // Riwayat pengajuan milik unit kerja user yang login (dummy dulu)
-        $riwayat = collect($this->dummyData())->take(3);
+        $user = auth()->user();
+
+        $riwayat = PengajuanAnggaran::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('pengajuan.riwayat', compact('riwayat'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => ['required', 'in:Diproses,Ditolak,Selesai'],
+            'catatan' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $pengajuan = PengajuanAnggaran::findOrFail($id);
+        $pengajuan->update([
+            'status' => $request->status,
+            'catatan' => $request->catatan,
+        ]);
+
+        return redirect()->route('pengajuan.index')
+            ->with('success', "Status pengajuan {$pengajuan->unit_kerja} diubah menjadi {$request->status}.");
     }
 }
