@@ -242,7 +242,60 @@
 
     </div>
 
-    {{-- Tata Cara Pengajuan --}}
+    <!-- Dasar hukum -->
+        <div class="relative z-10 max-w-6xl mx-auto px-6 pb-16">
+            <div class="text-center mb-10">
+                <p class="text-2xl text-polri-red tracking-widest uppercase mb-2">
+                    Dasar Hukum
+                </p>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">
+                    Landasan Pelaksanaan Anggaran
+                </h2>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8">
+                <div class="space-y-5">
+                    <div class="flex gap-4">
+                        <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">
+                            1
+                        </span>
+                    <p class="text-polri-silver leading-relaxed text-justify">
+                        Peraturan Pemerintah Nomor 45 Tahun 2011 tentang Pelaksanaan APBN.
+                    </p>
+                    </div>
+                </div>
+            
+
+                <div class="space-y-5">
+                    <div class="flex gap-4">
+                        <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">
+                            2
+                        </span>
+                    <p class="text-polri-silver leading-relaxed text-justify">
+                        Peraturan Menteri Keuangan Nomor 41 Tahun 2026 tentang Perubahan
+                        Kedua atas Peraturan Menteri Keuangan Nomor 62 Tahun 2023 tentang
+                        Perencanaan Anggaran, Pelaksanaan Anggaran, serta Akuntansi dan
+                        Pelaporan Keuangan.
+                    </p>
+                    </div>
+                </div>
+            
+
+                <div class="space-y-5"></div>
+                    <div class="flex gap-4">
+                        <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">
+                            3
+                        </span>
+                    <p class="text-polri-silver leading-relaxed text-justify">
+                        DIPA Bidang Teknologi Informasi dan Komunikasi Polda Jawa Timur
+                        Tahun Anggaran 2026.
+                    </p>
+                    </div> 
+                </div>
+            </div>
+        </div>
+
+     <!-- Tata Cara Pengajuan -->
     <div class="relative z-10 max-w-6xl mx-auto px-6 pb-20">
         <div class="text-center mb-10">
             <p class="text-2xl text-polri-red tracking-widest uppercase mb-2">Panduan Singkat</p>
