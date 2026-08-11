@@ -42,6 +42,10 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
 
     Route::get('/settings/pagu', [App\Http\Controllers\SettingsController::class, 'editPagu'])->name('settings.pagu');
     Route::patch('/settings/pagu', [App\Http\Controllers\SettingsController::class, 'updatePagu'])->name('settings.pagu.update');
+
+    Route::post('/settings/rencana', [App\Http\Controllers\SettingsController::class, 'storeRencana'])->name('settings.rencana.store');
+    Route::patch('/settings/rencana/{rencana}', [App\Http\Controllers\SettingsController::class, 'updateRencana'])->name('settings.rencana.update');
+    Route::delete('/settings/rencana/{rencana}', [App\Http\Controllers\SettingsController::class, 'destroyRencana'])->name('settings.rencana.destroy');
 });
 
 

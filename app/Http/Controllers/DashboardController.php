@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PaguAnggaran;
 use App\Models\PengajuanAnggaran;
+use App\Models\RencanaAnggaran;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -126,19 +127,34 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Dummy data rencana pendistribusian anggaran (visual saja, backend menyusul)
-        $rencanaAnggaran = [
-            ['no' => 1, 'item' => 'Harwat CC', 'pagu' => 350000, 'bulan' => ['jan' => 100000, 'feb' => 0, 'mar' => 0, 'apr' => 0, 'mei' => 25000, 'jun' => 0, 'jul' => 0, 'agu' => 0, 'sep' => 0, 'okt' => 0, 'nov' => 0, 'des' => 0]],
-            ['no' => 2, 'item' => 'Operasional', 'pagu' => 3000000, 'bulan' => ['jan' => 0, 'feb' => 0, 'mar' => 3000000, 'apr' => 0, 'mei' => 0, 'jun' => 0, 'jul' => 0, 'agu' => 0, 'sep' => 0, 'okt' => 0, 'nov' => 0, 'des' => 0]],
-            ['no' => 3, 'item' => 'Keberangkatan', 'pagu' => 800000, 'bulan' => ['jan' => 0, 'feb' => 0, 'mar' => 0, 'apr' => 0, 'mei' => 0, 'jun' => 0, 'jul' => 0, 'agu' => 800000, 'sep' => 0, 'okt' => 0, 'nov' => 0, 'des' => 0]],
-        ];
+        $rencanaAnggaran = RencanaAnggaran::where('satker', $user->unit_kerja)
+            ->orderBy('id')
+            ->get()
+            ->map(function ($r) {
+                return [
+                    'no' => $r->id,
+                    'satker' => $r->satker,
+                    'item' => $r->item,
+                    'pagu' => $r->pagu,
+                    'bulan' => collect(RencanaAnggaran::BULAN)->mapWithKeys(fn ($b) => [$b => (float) $r->{$b}])->all(),
+                ];
+            })
+            ->values()
+            ->all();
 
-        $rencanaAnggaranSemua = [
-            ['no' => 1, 'satker' => 'SUBBAGREMIN', 'item' => 'Harwat CC', 'pagu' => 350000, 'bulan' => ['jan' => 100000, 'feb' => 0, 'mar' => 0, 'apr' => 0, 'mei' => 25000, 'jun' => 0, 'jul' => 0, 'agu' => 0, 'sep' => 0, 'okt' => 0, 'nov' => 0, 'des' => 0]],
-            ['no' => 2, 'satker' => 'SUBBAGREMIN', 'item' => 'Operasional', 'pagu' => 3000000, 'bulan' => ['jan' => 0, 'feb' => 0, 'mar' => 3000000, 'apr' => 0, 'mei' => 0, 'jun' => 0, 'jul' => 0, 'agu' => 0, 'sep' => 0, 'okt' => 0, 'nov' => 0, 'des' => 0]],
-            ['no' => 3, 'satker' => 'SUBBID TEKKOM', 'item' => 'Belanja Modal', 'pagu' => 1500000, 'bulan' => ['jan' => 0, 'feb' => 500000, 'mar' => 0, 'apr' => 0, 'mei' => 0, 'jun' => 0, 'jul' => 0, 'agu' => 0, 'sep' => 1000000, 'okt' => 0, 'nov' => 0, 'des' => 0]],
-            ['no' => 4, 'satker' => 'SUBBID TEKINFO', 'item' => 'Pemeliharaan Server', 'pagu' => 2200000, 'bulan' => ['jan' => 0, 'feb' => 0, 'mar' => 0, 'apr' => 700000, 'mei' => 0, 'jun' => 0, 'jul' => 0, 'agu' => 0, 'sep' => 0, 'okt' => 1500000, 'nov' => 0, 'des' => 0]],
-        ];
+        $rencanaAnggaranSemua = RencanaAnggaran::orderBy('satker')->orderBy('id')
+            ->get()
+            ->map(function ($r) {
+                return [
+                    'no' => $r->id,
+                    'satker' => $r->satker,
+                    'item' => $r->item,
+                    'pagu' => $r->pagu,
+                    'bulan' => collect(RencanaAnggaran::BULAN)->mapWithKeys(fn ($b) => [$b => (float) $r->{$b}])->all(),
+                ];
+            })
+            ->values()
+            ->all();
 
         return view('dashboard', [
             'role' => $role,

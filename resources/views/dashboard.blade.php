@@ -194,7 +194,7 @@
                         <tbody>
                             @forelse($rencanaAnggaranSemua as $item)
                             <tr class="border-b border-polri-dark-light">
-                                <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['no'] }}</td>
+                                <td class="py-2 pr-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
                                 <td class="py-2 pr-3 text-white">{{ $item['satker'] }}</td>
                                 <td class="py-2 pr-3 text-polri-silver">{{ $item['item'] }}</td>
                                 <td class="py-2 pr-3 text-polri-silver">Rp {{ number_format($item['pagu'], 0, ',', '.') }}</td>
@@ -280,32 +280,25 @@
                 </div>
 
                 <div class="simopang-card p-5 overflow-x-auto">
-                <h3 class="text-sm font-semibold text-white mb-4">Rencana Pendistribusian Anggaran </h3>
+                <h3 class="text-sm font-semibold text-white mb-4">Rencana Pendistribusian Anggaran DIPA BID TIK POLDA JATIM 2026</h3>
                 <table class="w-full text-xs text-left whitespace-nowrap">
                     <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                         <tr>
                             <th class="py-2 pr-3">No</th>
+                            <th class="py-2 pr-3">Satker</th>
                             <th class="py-2 pr-3">Item</th>
                             <th class="py-2 pr-3">Pagu</th>
-                            <th class="py-2 pr-3">Jan</th>
-                            <th class="py-2 pr-3">Feb</th>
-                            <th class="py-2 pr-3">Mar</th>
-                            <th class="py-2 pr-3">Apr</th>
-                            <th class="py-2 pr-3">Mei</th>
-                            <th class="py-2 pr-3">Jun</th>
-                            <th class="py-2 pr-3">Jul</th>
-                            <th class="py-2 pr-3">Agu</th>
-                            <th class="py-2 pr-3">Sep</th>
-                            <th class="py-2 pr-3">Okt</th>
-                            <th class="py-2 pr-3">Nov</th>
-                            <th class="py-2 pr-3">Des</th>
+                            @foreach(\App\Models\RencanaAnggaran::BULAN as $bln)
+                                <th class="py-2 pr-3">{{ \App\Models\RencanaAnggaran::BULAN_LABEL[$bln] }}</th>
+                            @endforeach
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($rencanaAnggaran as $item)
                         <tr class="border-b border-polri-dark-light">
                             <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['no'] }}</td>
-                            <td class="py-2 pr-3 text-white">{{ $item['item'] }}</td>
+                            <td class="py-2 pr-3 text-white">{{ $item['satker'] }}</td>
+                            <td class="py-2 pr-3 text-polri-silver">{{ $item['item'] }}</td>
                             <td class="py-2 pr-3 text-polri-silver">Rp {{ number_format($item['pagu'], 0, ',', '.') }}</td>
                             @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
                                 <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['bulan'][$bln] > 0 ? number_format($item['bulan'][$bln], 0, ',', '.') : '-' }}</td>
@@ -313,7 +306,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="15" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk satker ini.</td>
+                            <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk satker ini.</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -342,6 +335,7 @@
                         </p>
                     </div>
                 </div>
+
 
                 {{-- Info Penting & Tata Cara Pengajuan --}}
                 <div class="simopang-card p-6 border-l-4 border-l-polri-red">
@@ -420,6 +414,41 @@
                         </tbody>
                     </table>
                 </div>
+
+                 <div class="simopang-card p-5 overflow-x-auto">
+                <h3 class="text-sm font-semibold text-white mb-4">Rencana Pendistribusian Anggaran DIPA BID TIK POLDA JATIM 2026</h3>
+                <table class="w-full text-xs text-left whitespace-nowrap">
+                    <thead class="border-b border-polri-dark-light text-polri-silver-dark">
+                        <tr>
+                            <th class="py-2 pr-3">No</th>
+                            <th class="py-2 pr-3">Satker</th>
+                            <th class="py-2 pr-3">Item</th>
+                            <th class="py-2 pr-3">Pagu</th>
+                            @foreach(\App\Models\RencanaAnggaran::BULAN as $bln)
+                                <th class="py-2 pr-3">{{ \App\Models\RencanaAnggaran::BULAN_LABEL[$bln] }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($rencanaAnggaran as $item)
+                        <tr class="border-b border-polri-dark-light">
+                            <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['no'] }}</td>
+                            <td class="py-2 pr-3 text-white">{{ $item['satker'] }}</td>
+                            <td class="py-2 pr-3 text-polri-silver">{{ $item['item'] }}</td>
+                            <td class="py-2 pr-3 text-polri-silver">Rp {{ number_format($item['pagu'], 0, ',', '.') }}</td>
+                            @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
+                                <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['bulan'][$bln] > 0 ? number_format($item['bulan'][$bln], 0, ',', '.') : '-' }}</td>
+                            @endforeach
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk satker Anda.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
             @endif
 
         </div>
