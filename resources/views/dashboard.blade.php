@@ -35,7 +35,7 @@
                         <p class="text-xs text-polri-silver-dark mt-2">Tersedia untuk diajukan</p>
                     </div>
                     <div class="simopang-card p-5 border-l-4 border-l-polri-silver">
-                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Jumlah Satker</p>
+                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Jumlah Subsatker</p>
                         <p class="text-xl font-bold text-white mt-1">{{ count($unitKerja) }}</p>
                         <p class="text-xs text-polri-silver-dark mt-2">3 Satuan Kerja aktif</p>
                     </div>
@@ -93,23 +93,23 @@
                 {{-- Charts --}}
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div class="simopang-card p-5">
-                        <h3 class="text-sm font-semibold text-white mb-3">Sisa Pagu per Unit Kerja</h3>
+                        <h3 class="text-sm font-semibold text-white mb-3">SISA PAGU PER SUBSATKER</h3>
                         <canvas id="chartPagu" height="180"></canvas>
                     </div>
                     <div class="simopang-card p-5">
-                        <h3 class="text-sm font-semibold text-white mb-3">Tren Realisasi Bulanan</h3>
+                        <h3 class="text-sm font-semibold text-white mb-3">TREN REALISASI BULANAN</h3>
                         <canvas id="chartTren" height="180"></canvas>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <div class="simopang-card p-5">
-                        <h3 class="text-sm font-semibold text-white mb-3">Distribusi Status Pengajuan</h3>
+                        <h3 class="text-sm font-semibold text-white mb-3">DISTRIBUSI STATUS PENGAJUAN</h3>
                         <canvas id="chartStatus" height="200"></canvas>
                     </div>
 
                     <div class="simopang-card p-5 lg:col-span-2">
-                        <h3 class="text-sm font-semibold text-white mb-3">Ranking Penyerapan Unit Kerja</h3>
+                        <h3 class="text-sm font-semibold text-white mb-3">RANKING PENYERAPAN UNIT KERJA</h3>
                         <div class="space-y-2">
                             @foreach($ranking as $i => $u)
                             <div class="flex items-center gap-3">
@@ -128,7 +128,7 @@
                 {{-- Tabel data monitoring --}}
                 <div class="simopang-card p-5">
                     <div class="flex flex-col sm:flex-row justify-between gap-3 mb-4">
-                        <h3 class="text-sm font-semibold text-white">Data Monitoring Anggaran</h3>
+                        <h3 class="text-sm font-semibold text-white">DATA MONITORING ANGGARAN</h3>
                         <div class="flex gap-2">
                             <input type="text" id="searchTable" placeholder="Cari unit kerja..." class="simopang-input text-sm px-3 py-1.5">
                             <a href="{{ route('rekap.export-pdf') }}" class="px-3 py-1.5 text-xs border border-polri-red rounded-lg text-polri-red hover:bg-polri-red/10">Export PDF</a>
@@ -169,13 +169,13 @@
                 </div>
 
                 <div class="simopang-card p-5 overflow-x-auto">
-                    <h3 class="text-sm font-semibold text-white mb-4">Rencana Pendistribusian Anggaran DIPA BID TIK POLDA JATIM 2026</h3>
+                    <h3 class="text-sm font-semibold text-white mb-4">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
                     <table class="w-full text-xs text-left whitespace-nowrap">
                         <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                             <tr>
                                 <th class="py-2 pr-3">No</th>
-                                <th class="py-2 pr-3">Satker</th>
-                                <th class="py-2 pr-3">Item</th>
+                                <th class="py-2 pr-3">Subsatker</th>
+                                <th class="py-2 pr-3">Uraian</th>
                                 <th class="py-2 pr-3">Pagu</th>
                                 <th class="py-2 pr-3">Jan</th>
                                 <th class="py-2 pr-3">Feb</th>
@@ -236,7 +236,7 @@
 
                 <div class="simopang-card p-5">
                     <div class="flex flex-col sm:flex-row justify-between gap-3 mb-4">
-                        <h3 class="text-sm font-semibold text-white">Data Monitoring Anggaran</h3>
+                        <h3 class="text-sm font-semibold text-white">DATA MONITORING ANGGARAN</h3>
                         <div class="flex gap-2">
                             <input type="text" id="searchTableAdmin" placeholder="Cari urusan..." class="simopang-input text-sm px-3 py-1.5">
                             <a href="{{ route('rekap.export-excel-admin') }}" class="px-3 py-1.5 text-xs border border-green-600 rounded-lg text-green-400 hover:bg-green-600/10">Export Excel</a>
@@ -245,7 +245,7 @@
                     <table class="w-full text-sm text-left" id="monitoringTableAdmin">
                         <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                             <tr>
-                                <th class="py-2">Unit Kerja</th>
+                                <th class="py-2">Subsatker</th>
                                 <th class="py-2">Tanggal</th>
                                 <th class="py-2">Jumlah</th>
                                 <th class="py-2">Status</th>
@@ -271,7 +271,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4" class="py-8 text-center text-polri-silver-dark">Belum ada pengajuan anggaran untuk satker ini.</td>
+                                <td colspan="4" class="py-8 text-center text-polri-silver-dark">Belum ada pengajuan anggaran untuk subsatker ini.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -280,13 +280,13 @@
                 </div>
 
                 <div class="simopang-card p-5 overflow-x-auto">
-                <h3 class="text-sm font-semibold text-white mb-4">Rencana Pendistribusian Anggaran DIPA BID TIK POLDA JATIM 2026</h3>
+                <h3 class="text-sm font-semibold text-white mb-4">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026/h3>
                 <table class="w-full text-xs text-left whitespace-nowrap">
                     <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                         <tr>
                             <th class="py-2 pr-3">No</th>
-                            <th class="py-2 pr-3">Satker</th>
-                            <th class="py-2 pr-3">Item</th>
+                            <th class="py-2 pr-3">Subsatker</th>
+                            <th class="py-2 pr-3">Uraian</th>
                             <th class="py-2 pr-3">Pagu</th>
                             @foreach(\App\Models\RencanaAnggaran::BULAN as $bln)
                                 <th class="py-2 pr-3">{{ \App\Models\RencanaAnggaran::BULAN_LABEL[$bln] }}</th>
@@ -306,7 +306,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk satker ini.</td>
+                            <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk subsatker ini.</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -416,13 +416,13 @@
                 </div>
 
                  <div class="simopang-card p-5 overflow-x-auto">
-                <h3 class="text-sm font-semibold text-white mb-4">Rencana Pendistribusian Anggaran DIPA BID TIK POLDA JATIM 2026</h3>
+                <h3 class="text-sm font-semibold text-white mb-4">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
                 <table class="w-full text-xs text-left whitespace-nowrap">
                     <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                         <tr>
                             <th class="py-2 pr-3">No</th>
-                            <th class="py-2 pr-3">Satker</th>
-                            <th class="py-2 pr-3">Item</th>
+                            <th class="py-2 pr-3">Subsatker</th>
+                            <th class="py-2 pr-3">Uraian</th>
                             <th class="py-2 pr-3">Pagu</th>
                             @foreach(\App\Models\RencanaAnggaran::BULAN as $bln)
                                 <th class="py-2 pr-3">{{ \App\Models\RencanaAnggaran::BULAN_LABEL[$bln] }}</th>
@@ -442,7 +442,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk satker Anda.</td>
+                            <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk subsatker Anda.</td>
                         </tr>
                         @endforelse
                     </tbody>
