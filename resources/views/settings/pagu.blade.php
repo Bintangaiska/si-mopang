@@ -42,10 +42,9 @@
                                         <td class="py-3 px-2 text-polri-silver font-medium">{{ $unit }}</td>
                                         <td class="py-3 px-2 text-polri-silver-dark">Rp {{ number_format($realisasi, 0, ',', '.') }}</td>
                                         <td class="py-3 px-2">
-                                            <input type="number" name="pagu[{{ $unit }}]"
-                                                value="{{ $paguMap[$unit] ?? 0 }}"
-                                                min="0" step="500000"
-                                                class="simopang-input text-sm px-3 py-1.5 w-full">
+                                            <input type="text" inputmode="numeric" name="pagu[{{ $unit }}]"
+                                                value="{{ number_format($paguMap[$unit] ?? 0, 0, ',', '.') }}"
+                                                class="rencana-nominal simopang-input text-sm px-3 py-1.5 w-full">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -93,7 +92,7 @@
                         </div>
                         <div>
                             <label class="block text-xs text-polri-silver-dark mb-1">Pagu Total (Rp)</label>
-                            <input type="number" name="pagu" value="{{ old('pagu') }}" min="0" step="1000" placeholder="0" class="simopang-input w-full px-3 py-2 text-sm" required>
+                            <input type="text" inputmode="numeric" name="pagu" value="{{ old('pagu') }}" placeholder="0" class="rencana-nominal simopang-input w-full px-3 py-2 text-sm" required>
                         </div>
                     </div>
 
@@ -101,7 +100,7 @@
                         @foreach(\App\Models\RencanaAnggaran::BULAN as $bln)
                             <div>
                                 <label class="block text-xs text-polri-silver-dark mb-1">{{ \App\Models\RencanaAnggaran::BULAN_LABEL[$bln] }}</label>
-                                <input type="number" name="{{ $bln }}" value="{{ old($bln) }}" min="0" step="1000" placeholder="0" class="simopang-input w-full px-3 py-2 text-sm">
+                                <input type="text" inputmode="numeric" name="{{ $bln }}" value="{{ old($bln) }}" placeholder="0" class="rencana-nominal simopang-input w-full px-3 py-2 text-sm">
                             </div>
                         @endforeach
                     </div>
@@ -167,14 +166,14 @@
                                             </div>
                                             <div>
                                                 <label class="block text-xs text-polri-silver-dark mb-1">Pagu Total (Rp)</label>
-                                                <input type="number" name="pagu" value="{{ $item->pagu }}" min="0" step="1000" class="simopang-input w-full px-3 py-2 text-sm" required>
+                                                <input type="text" inputmode="numeric" name="pagu" value="{{ $item->pagu }}" class="rencana-nominal simopang-input w-full px-3 py-2 text-sm" required>
                                             </div>
                                         </div>
                                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
                                             @foreach(\App\Models\RencanaAnggaran::BULAN as $bln)
                                                 <div>
                                                     <label class="block text-xs text-polri-silver-dark mb-1">{{ \App\Models\RencanaAnggaran::BULAN_LABEL[$bln] }}</label>
-                                                    <input type="number" name="{{ $bln }}" value="{{ $item->{$bln} }}" min="0" step="1000" class="simopang-input w-full px-3 py-2 text-sm">
+                                                    <input type="text" inputmode="numeric" name="{{ $bln }}" value="{{ $item->{$bln} }}" class="rencana-nominal simopang-input w-full px-3 py-2 text-sm">
                                                 </div>
                                             @endforeach
                                         </div>
@@ -201,5 +200,31 @@
         function toggleEditRencana(id) {
             document.getElementById('edit-row-' + id).classList.toggle('hidden');
         }
+
+        function formatRupiah(value) {
+            var digits = value.replace(/\D/g, '').replace(/^0+(?=\d)/, '');
+            return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        document.addEventListener('input', function (e) {
+            var input = e.target;
+            if (input.classList && input.classList.contains('rencana-nominal')) {
+                var caret = input.value.length;
+                input.value = formatRupiah(input.value);
+                input.setSelectionRange(caret, caret);
+            }
+        });
+
+        document.addEventListener('submit', function (e) {
+            e.target.querySelectorAll('.rencana-nominal').forEach(function (input) {
+                input.value = input.value.replace(/\./g, '');
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.rencana-nominal').forEach(function (input) {
+                input.value = formatRupiah(input.value);
+            });
+        });
     </script>
 </x-app-layout>

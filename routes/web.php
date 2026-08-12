@@ -29,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dev/switch-role/{role}', [App\Http\Controllers\DevToolsController::class, 'switchRole'])->name('dev.switch-role');
 
     Route::get('/rekap/admin/export/excel', [App\Http\Controllers\RekapController::class, 'exportExcelAdmin'])->name('rekap.export-excel-admin');
+
+    Route::get('/rencana/export/excel', [App\Http\Controllers\RencanaController::class, 'exportExcel'])->name('rencana.export-excel');
+    Route::get('/rencana/export/pdf', [App\Http\Controllers\RencanaController::class, 'exportPdf'])->name('rencana.export-pdf');
 });
 
 Route::middleware(['auth', 'role:super_admin'])->group(function () {

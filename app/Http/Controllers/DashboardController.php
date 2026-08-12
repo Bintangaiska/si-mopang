@@ -135,12 +135,14 @@ class DashboardController extends Controller
                     'no' => $r->id,
                     'satker' => $r->satker,
                     'item' => $r->item,
-                    'pagu' => $r->pagu,
+                    'pagu' => (float) $r->pagu,
                     'bulan' => collect(RencanaAnggaran::BULAN)->mapWithKeys(fn ($b) => [$b => (float) $r->{$b}])->all(),
                 ];
             })
             ->values()
             ->all();
+
+        $rencanaTotal = $this->totalRencana($rencanaAnggaran);
 
         $rencanaAnggaranSemua = RencanaAnggaran::orderBy('satker')->orderBy('id')
             ->get()
@@ -149,12 +151,14 @@ class DashboardController extends Controller
                     'no' => $r->id,
                     'satker' => $r->satker,
                     'item' => $r->item,
-                    'pagu' => $r->pagu,
+                    'pagu' => (float) $r->pagu,
                     'bulan' => collect(RencanaAnggaran::BULAN)->mapWithKeys(fn ($b) => [$b => (float) $r->{$b}])->all(),
                 ];
             })
             ->values()
             ->all();
+
+        $rencanaTotalSemua = $this->totalRencana($rencanaAnggaranSemua);
 
         return view('dashboard', [
             'role' => $role,
@@ -181,7 +185,27 @@ class DashboardController extends Controller
             'sisaPaguAdmin' => $sisaPaguAdmin,
             'pengajuanAdmin' => $pengajuanAdmin,
             'rencanaAnggaran' => $rencanaAnggaran,
+            'rencanaTotal' => $rencanaTotal,
             'rencanaAnggaranSemua' => $rencanaAnggaranSemua,
+            'rencanaTotalSemua' => $rencanaTotalSemua,
         ]);
+    }
+
+    private function totalRencana(array $data): array
+    {
+        $bulan = [];
+
+        foreach (RencanaAnggaran::BULAN as $bln) {
+            $total = 0;
+            foreach ($data as $d) {
+                $total += $d['bulan'][$bln] ?? 0;
+            }
+            $bulan[$bln] = $total;
+        }
+
+        return [
+            'pagu' => array_sum(array_column($data, 'pagu')),
+            'bulan' => $bulan,
+        ];
     }
 }

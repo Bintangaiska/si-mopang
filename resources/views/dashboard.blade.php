@@ -169,7 +169,13 @@
                 </div>
 
                 <div class="simopang-card p-5 overflow-x-auto">
-                    <h3 class="text-sm font-semibold text-white mb-4">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+                        <h3 class="text-sm font-semibold text-white">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
+                        <div class="flex gap-2">
+                            <a href="{{ route('rencana.export-excel') }}" class="px-3 py-1.5 text-xs border border-green-600 rounded-lg text-green-400 hover:bg-green-600/10">Export Excel</a>
+                            <a href="{{ route('rencana.export-pdf') }}" class="px-3 py-1.5 text-xs border border-red-600 rounded-lg text-red-400 hover:bg-red-600/10">Export PDF</a>
+                        </div>
+                    </div>
                     <table class="w-full text-xs text-left whitespace-nowrap">
                         <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                             <tr>
@@ -199,7 +205,7 @@
                                 <td class="py-2 pr-3 text-polri-silver">{{ $item['item'] }}</td>
                                 <td class="py-2 pr-3 text-polri-silver">Rp {{ number_format($item['pagu'], 0, ',', '.') }}</td>
                                 @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
-                                    <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['bulan'][$bln] > 0 ? number_format($item['bulan'][$bln], 0, ',', '.') : '-' }}</td>
+                                    <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['bulan'][$bln] > 0 ?  number_format($item['bulan'][$bln], 0, ',', '.') : '-' }}</td>
                                 @endforeach
                             </tr>
                             @empty
@@ -207,6 +213,15 @@
                                 <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada data rencana anggaran.</td>
                             </tr>
                             @endforelse
+                            @if(count($rencanaAnggaranSemua) > 0)
+                            <tr class="bg-polri-dark-light/40 font-semibold">
+                                <td colspan="3" class="py-2 pr-3 text-white uppercase text-[10px] tracking-wider">Total</td>
+                                <td class="py-2 pr-3 text-white">Rp {{ number_format($rencanaTotalSemua['pagu'], 0, ',', '.') }}</td>
+                                @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
+                                    <td class="py-2 pr-3 text-white">{{ $rencanaTotalSemua['bulan'][$bln] > 0 ? number_format($rencanaTotalSemua['bulan'][$bln], 0, ',', '.') : '-' }}</td>
+                                @endforeach
+                            </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -279,8 +294,14 @@
                     <p class="text-xs text-polri-silver-dark mt-3" id="tableInfoAdmin"></p>
                 </div>
 
-                <div class="simopang-card p-5 overflow-x-auto">
-                <h3 class="text-sm font-semibold text-white mb-4">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026/h3>
+                 <div class="simopang-card p-5 overflow-x-auto">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+                    <h3 class="text-sm font-semibold text-white">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
+                    <div class="flex gap-2">
+                        <a href="{{ route('rencana.export-excel') }}" class="px-3 py-1.5 text-xs border border-green-600 rounded-lg text-green-400 hover:bg-green-600/10">Export Excel</a>
+                        <a href="{{ route('rencana.export-pdf') }}" class="px-3 py-1.5 text-xs border border-red-600 rounded-lg text-red-400 hover:bg-red-600/10">Export PDF</a>
+                    </div>
+                </div>
                 <table class="w-full text-xs text-left whitespace-nowrap">
                     <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                         <tr>
@@ -296,7 +317,7 @@
                     <tbody>
                         @forelse($rencanaAnggaran as $item)
                         <tr class="border-b border-polri-dark-light">
-                            <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['no'] }}</td>
+                            <td class="py-2 pr-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
                             <td class="py-2 pr-3 text-white">{{ $item['satker'] }}</td>
                             <td class="py-2 pr-3 text-polri-silver">{{ $item['item'] }}</td>
                             <td class="py-2 pr-3 text-polri-silver">Rp {{ number_format($item['pagu'], 0, ',', '.') }}</td>
@@ -309,6 +330,15 @@
                             <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk subsatker ini.</td>
                         </tr>
                         @endforelse
+                        @if(count($rencanaAnggaran) > 0)
+                        <tr class="bg-polri-dark-light/40 font-semibold">
+                            <td colspan="3" class="py-2 pr-3 text-white uppercase text-[10px] tracking-wider">Total</td>
+                            <td class="py-2 pr-3 text-white">Rp {{ number_format($rencanaTotal['pagu'], 0, ',', '.') }}</td>
+                            @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
+                                <td class="py-2 pr-3 text-white">{{ $rencanaTotal['bulan'][$bln] > 0 ? number_format($rencanaTotal['bulan'][$bln], 0, ',', '.') : '-' }}</td>
+                            @endforeach
+                        </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -416,7 +446,13 @@
                 </div>
 
                  <div class="simopang-card p-5 overflow-x-auto">
-                <h3 class="text-sm font-semibold text-white mb-4">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+                    <h3 class="text-sm font-semibold text-white">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
+                    <div class="flex gap-2">
+                        <a href="{{ route('rencana.export-excel') }}" class="px-3 py-1.5 text-xs border border-green-600 rounded-lg text-green-400 hover:bg-green-600/10">Export Excel</a>
+                        <a href="{{ route('rencana.export-pdf') }}" class="px-3 py-1.5 text-xs border border-red-600 rounded-lg text-red-400 hover:bg-red-600/10">Export PDF</a>
+                    </div>
+                </div>
                 <table class="w-full text-xs text-left whitespace-nowrap">
                     <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                         <tr>
@@ -432,7 +468,7 @@
                     <tbody>
                         @forelse($rencanaAnggaran as $item)
                         <tr class="border-b border-polri-dark-light">
-                            <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['no'] }}</td>
+                            <td class="py-2 pr-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
                             <td class="py-2 pr-3 text-white">{{ $item['satker'] }}</td>
                             <td class="py-2 pr-3 text-polri-silver">{{ $item['item'] }}</td>
                             <td class="py-2 pr-3 text-polri-silver">Rp {{ number_format($item['pagu'], 0, ',', '.') }}</td>
@@ -445,6 +481,15 @@
                             <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk subsatker Anda.</td>
                         </tr>
                         @endforelse
+                        @if(count($rencanaAnggaran) > 0)
+                        <tr class="bg-polri-dark-light/40 font-semibold">
+                            <td colspan="3" class="py-2 pr-3 text-white uppercase text-[10px] tracking-wider">Total</td>
+                            <td class="py-2 pr-3 text-white">Rp {{ number_format($rencanaTotal['pagu'], 0, ',', '.') }}</td>
+                            @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
+                                <td class="py-2 pr-3 text-white">{{ $rencanaTotal['bulan'][$bln] > 0 ? number_format($rencanaTotal['bulan'][$bln], 0, ',', '.') : '-' }}</td>
+                            @endforeach
+                        </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
