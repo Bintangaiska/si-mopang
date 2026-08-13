@@ -17,27 +17,26 @@
                     </div>
                 </a>  -->
 
-           <a href="{{ route('dashboard') }}" class="flex items-center gap-3 shrink-0">
+            <!-- Logo -->
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 shrink-0">
+                    <img
+                        src="{{ asset('images/logo-tikpolri.png') }}"
+                        class="h-12 w-12 object-contain"
+                        alt="Logo TIK Polri"
+                    >
 
-    <img
-        src="{{ asset('images/logo-tikpolri.png') }}"
-        class="h-12 w-12 object-contain"
-        alt="Logo TIK Polri"
-    >
+                <div class="flex flex-col leading-none">
+                    <span class="text-[28px] tracking-[0.4em] font-black text-white">
+                        SIMOPANG
+                    </span>
 
-    <div class="flex flex-col leading-none">
-    <span class="text-[28px] tracking-[0.4em] font-black text-white">
-        SIMOPANG
-    </span>
+                    <span class="text-[8px] uppercase tracking-[0.2em] text-polri-silver">
+                        Sistem Monitoring Penyerapan Anggaran
+                    </span>
+                </div>
 
-    <span class="text-[8px] uppercase tracking-[0.2em] text-polri-silver">
-        Sistem Monitoring Penyerapan Anggaran
-    </span>
-</div>
+                </a>
 
-</a>
-
-                
 
                 <!-- Menu Horizontal (Desktop) -->
                 <div class="hidden lg:flex items-center gap-1">
@@ -48,7 +47,7 @@
                     @elseif(auth()->user()->role === 'admin')
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('dashboard') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Dashboard</a>
                         <a href="{{ route('pengajuan.index') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('pengajuan.index') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Manajemen Pengajuan</a>
-                        <a href="#" class="px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white transition">Manajemen User</a>
+                        <!-- <a href="#" class="px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white transition">Manajemen User</a> -->
                     @else
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('dashboard') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Dashboard</a>
                         <a href="{{ route('pengajuan.create') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('pengajuan.create') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Ajukan Anggaran</a>
@@ -57,8 +56,42 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown (Desktop) -->
-            <div class="hidden lg:flex lg:items-center lg:ms-6">
+            <!-- Notifikasi + Settings Dropdown (Desktop) -->
+            <div class="hidden lg:flex lg:items-center lg:ms-6 gap-2">
+
+                <!-- Notifikasi -->
+                <div class="relative" x-data="{ openNotif: false }">
+                    <button @click="openNotif = !openNotif" @click.away="openNotif = false" class="relative p-2 text-polri-silver hover:text-white transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        @if(isset($notifikasi) && $notifikasi->count() > 0)
+                            <span class="absolute top-1 right-1 w-2 h-2 bg-polri-red rounded-full"></span>
+                        @endif
+                    </button>
+
+                    <div x-show="openNotif" x-transition class="absolute right-0 mt-2 w-80 bg-polri-dark border border-polri-dark-light rounded-lg shadow-xl z-50" style="display: none;">
+                        <div class="p-3 border-b border-polri-dark-light">
+                            <p class="text-sm font-semibold text-white">Notifikasi Terbaru</p>
+                        </div>
+                        <div class="max-h-80 overflow-y-auto">
+                            @forelse($notifikasi ?? [] as $item)
+                            <a href="{{ route('pengajuan.show', $item->id) }}" class="block px-4 py-3 border-b border-polri-dark-light hover:bg-white/5 transition">
+                                <p class="text-sm text-white">{{ $item->unit_kerja }}</p>
+                                <p class="text-xs text-polri-silver-dark mt-0.5">
+                                    Rp {{ number_format($item->jumlah, 0, ',', '.') }} —
+                                    <span class="{{ $item->status === 'Selesai' ? 'text-green-400' : ($item->status === 'Ditolak' ? 'text-red-400' : 'text-yellow-400') }}">{{ $item->status }}</span>
+                                </p>
+                                <p class="text-[10px] text-polri-silver-dark mt-1">{{ $item->updated_at->diffForHumans() }}</p>
+                            </a>
+                            @empty
+                            <p class="px-4 py-6 text-center text-sm text-polri-silver-dark">Belum ada aktivitas terbaru.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 text-sm leading-4 font-medium rounded-md text-polri-silver hover:text-white focus:outline-none transition ease-in-out duration-150">
@@ -86,6 +119,7 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+
             </div>
 
             <!-- Hamburger (Mobile & Tablet) -->
@@ -110,7 +144,7 @@
             @elseif(auth()->user()->role === 'admin')
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Dashboard</a>
                 <a href="{{ route('pengajuan.index') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen Pengajuan</a>
-                <a href="#" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen User</a>
+                <!-- <a href="#" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen User</a> -->
             @else
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Dashboard</a>
                 <a href="{{ route('pengajuan.create') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Ajukan Anggaran</a>
