@@ -440,6 +440,7 @@
                         <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                             <tr>
                                 <th class="py-2">Tanggal</th>
+                                <th class="py-2">Uraian</th>
                                 <th class="py-2">Jumlah</th>
                                 <th class="py-2">Status</th>
                             </tr>
@@ -448,6 +449,7 @@
                             @foreach($pengajuanUserTerbaru->take(2) as $item)
                             <tr class="border-b border-polri-dark-light">
                                 <td class="py-2 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
+                                <td class="py-2 text-polri-silver">{{ $item->uraian }}</td>
                                 <td class="py-2 text-polri-silver">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
                                 <td class="py-2 text-polri-silver">{{ $item->status }}</td>
                             </tr>

@@ -78,6 +78,14 @@
 
                     <div class="mb-4">
                         <label class="block text-sm text-polri-silver-dark mb-1">
+                            Tanggal Pengajuan
+                        </label>
+                        <input type="date" name="tanggal_pengajuan" value="{{ old('tanggal_pengajuan') }}"
+                               class="simopang-input w-full px-3 py-2" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm text-polri-silver-dark mb-1">
                             Uraian / Nama Anggaran
                         </label>
                         <input type="text" name="uraian" value="{{ old('uraian') }}"
@@ -88,15 +96,6 @@
                         @enderror
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block text-sm text-polri-silver-dark mb-1">
-                            Tanggal Pengajuan
-                        </label>
-                        <input type="date" name="tanggal_pengajuan" value="{{ old('tanggal_pengajuan') }}"
-                               class="simopang-input w-full px-3 py-2" required>
-                    </div>
-
-                    
 
                     <div class="mb-4">
                         <label class="block text-sm text-polri-silver-dark mb-1">
