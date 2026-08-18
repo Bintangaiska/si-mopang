@@ -20,6 +20,7 @@
                         <tr>
                             <th class="py-2">Subsatker</th>
                             <th class="py-2">Urusan</th>
+                            <th class="py-2">Uraian</th>
                             <th class="py-2">Tanggal</th>
                             <th class="py-2">Jumlah</th>
                             <th class="py-2">Status</th>
@@ -31,6 +32,7 @@
                         <tr class="border-b border-polri-dark-light">
                             <td class="py-2 text-polri-silver">{{ $item->unit_kerja }}</td>
                             <td class="py-2 text-polri-silver">{{ $item->urusan ?? '-' }}</td>
+                            <td class="py-2 text-polri-silver">{{ $item->uraian ?? '-' }}</td>
                             <td class="py-2 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
                             <td class="py-2 text-polri-silver">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
                             <td class="py-2">
@@ -50,7 +52,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="py-6 text-center text-polri-silver-dark text-sm">
+                            <td colspan="6" class="py-6 text-center text-polri-silver-dark text-sm">
                                 Belum ada pengajuan. <a href="{{ route('pengajuan.create') }}" class="text-polri-red hover:underline">Ajukan sekarang</a>
                             </td>
                         </tr>

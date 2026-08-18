@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pengajuan', [App\Http\Controllers\PengajuanController::class, 'store'])->name('pengajuan.store');
     Route::get('/pengajuan/riwayat', [App\Http\Controllers\PengajuanController::class, 'riwayat'])->name('pengajuan.riwayat');
     Route::get('/pengajuan/{id}', [App\Http\Controllers\PengajuanController::class, 'show'])->name('pengajuan.show');
-    Route::patch('/pengajuan/{id}/status', [App\Http\Controllers\PengajuanController::class, 'updateStatus'])->name('pengajuan.update-status');
+    Route::patch('/pengajuan/{id}/status', [App\Http\Controllers\PengajuanController::class, 'updateStatus'])->middleware('role:admin')->name('pengajuan.update-status');
 
     Route::get('/dev/switch-role/{role}', [App\Http\Controllers\DevToolsController::class, 'switchRole'])->name('dev.switch-role');
 

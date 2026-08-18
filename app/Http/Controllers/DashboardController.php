@@ -115,34 +115,14 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        // Admin-specific: data for their satker
-        $paguAdmin = $paguMap[$user->unit_kerja] ?? 0;
-        $totalTerserapAdmin = PengajuanAnggaran::where('unit_kerja', $user->unit_kerja)
-            ->where('status', 'Selesai')
+        // Admin-specific: global data (all satker)
+        $paguAdmin = array_sum($paguMap);
+        $totalTerserapAdmin = PengajuanAnggaran::where('status', 'Selesai')
             ->sum('jumlah');
-        $sisaPaguAdmin = $paguAdmin - $totalTerserapAdmin;
-        if ($sisaPaguAdmin < 0) $sisaPaguAdmin = 0;
+        $sisaPaguAdmin = max($paguAdmin - $totalTerserapAdmin, 0);
         $pengajuanAdmin = PengajuanAnggaran::with('user')
-            ->where('unit_kerja', $user->unit_kerja)
             ->orderBy('created_at', 'desc')
             ->get();
-
-        $rencanaAnggaran = RencanaAnggaran::where('satker', $user->unit_kerja)
-            ->orderBy('id')
-            ->get()
-            ->map(function ($r) {
-                return [
-                    'no' => $r->id,
-                    'satker' => $r->satker,
-                    'item' => $r->item,
-                    'pagu' => (float) $r->pagu,
-                    'bulan' => collect(RencanaAnggaran::BULAN)->mapWithKeys(fn ($b) => [$b => (float) $r->{$b}])->all(),
-                ];
-            })
-            ->values()
-            ->all();
-
-        $rencanaTotal = $this->totalRencana($rencanaAnggaran);
 
         $rencanaAnggaranSemua = RencanaAnggaran::orderBy('satker')->orderBy('id')
             ->get()
@@ -159,6 +139,10 @@ class DashboardController extends Controller
             ->all();
 
         $rencanaTotalSemua = $this->totalRencana($rencanaAnggaranSemua);
+
+        // Admin sees all rencana (same as super_admin)
+        $rencanaAnggaran = $rencanaAnggaranSemua;
+        $rencanaTotal = $rencanaTotalSemua;
 
         return view('dashboard', [
             'role' => $role,

@@ -12,13 +12,7 @@ class PengajuanController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
         $query = PengajuanAnggaran::with('user');
-
-        if ($user->role === 'admin' && $user->unit_kerja) {
-            $query->where('unit_kerja', $user->unit_kerja);
-        }
-
         $pengajuan = $query->orderBy('created_at', 'desc')->get();
 
         return view('pengajuan.index', compact('pengajuan'));
@@ -50,6 +44,7 @@ class PengajuanController extends Controller
         $request->validate([
             'unit_kerja' => ['required', 'string', Rule::in(array_keys(config('unitkerja.satker')))],
             'urusan' => ['required', 'string', Rule::in(collect(config('unitkerja.satker'))->flatten()->all())],
+            'uraian' => ['required', 'string', 'max:255'],
             'tanggal_pengajuan' => ['required', 'date'],
             'jumlah_pengajuan' => ['required', 'numeric', 'min:1'],
             'rka' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
@@ -66,6 +61,7 @@ class PengajuanController extends Controller
             'user_id' => $user->id,
             'unit_kerja' => $request->unit_kerja,
             'urusan' => $request->urusan,
+            'uraian' => $request->uraian,
             'tanggal_pengajuan' => $request->tanggal_pengajuan,
             'jumlah' => $request->jumlah_pengajuan,
             'file_rka' => $fileRka,

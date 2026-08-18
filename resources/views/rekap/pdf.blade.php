@@ -115,6 +115,7 @@
                     <th style="width:10%">Tanggal</th>
                     <th style="width:15%">Sub Satuan Kerja</th>
                     <th style="width:13%">Urusan</th>
+                    <th style="width:17%">Uraian</th>
                     <th style="width:17%">Pengaju</th>
                     <th style="width:13%" class="num">Jumlah (Rp)</th>
                     <th style="width:9%">Status</th>
@@ -128,6 +129,7 @@
                     <td>{{ $item->tanggal_pengajuan->format('d/m/Y') }}</td>
                     <td>{{ $item->unit_kerja }}</td>
                     <td>{{ $item->urusan ?? '-' }}</td>
+                    <td>{{ $item->uraian ?? '-' }}</td>
                     <td>{{ $item->user?->name ?? '-' }}</td>
                     <td class="num">{{ number_format($item->jumlah, 0, ',', '.') }}</td>
                     <td>
@@ -145,7 +147,7 @@
                 </tr>
                 @endforeach
                 <tr class="total-row">
-                    <td colspan="5">TOTAL</td>
+                    <td colspan="6">TOTAL</td>
                     <td class="num">{{ number_format($total, 0, ',', '.') }}</td>
                     <td colspan="2"></td>
                 </tr>

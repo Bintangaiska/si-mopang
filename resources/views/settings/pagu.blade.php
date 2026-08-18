@@ -15,7 +15,7 @@
             @endif
 
             <div class="simopang-card p-6">
-                <h3 class="text-sm font-semibold text-white mb-1">Atur Jumlah Anggaran per Unit Kerja</h3>
+                <h3 class="text-sm font-semibold text-white mb-1">ATUR ANGGARAN PER SUBSATKER</h3>
                 <p class="text-xs text-polri-silver-dark mb-5">Isi pagu anggaran untuk setiap unit kerja. Perubahan langsung dipakai di dashboard, halaman pengajuan, dan rekap.</p>
 
                 <form method="POST" action="{{ route('settings.pagu.update') }}">
@@ -62,7 +62,7 @@
 
             {{-- ========== RENCANA PENDISTRIBUSIAN ANGGARAN ========== --}}
             <div class="simopang-card p-6 mt-6">
-                <h3 class="text-sm font-semibold text-white mb-1">Rencana Pendistribusian Anggaran DIPA BID TIK POLDA JATIM 2026</h3>
+                <h3 class="text-sm font-semibold text-white mb-1">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
                 <p class="text-xs text-polri-silver-dark mb-5">Kelola rencana pendistribusian anggaran per satker per bulan. Data ini tampil di dashboard.</p>
 
                 {{-- Form tambah --}}
@@ -78,7 +78,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
                         <div>
-                            <label class="block text-xs text-polri-silver-dark mb-1">Satker</label>
+                            <label class="block text-xs text-polri-silver-dark mb-1">Subsatker</label>
                             <select name="satker" class="simopang-input w-full px-3 py-2 text-sm" required>
                                 <option value="" disabled selected>Pilih satker</option>
                                 @foreach($satker as $unit)
@@ -87,7 +87,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs text-polri-silver-dark mb-1">Item</label>
+                            <label class="block text-xs text-polri-silver-dark mb-1">Uraian</label>
                             <input type="text" name="item" value="{{ old('item') }}" placeholder="Contoh: Harwat CC" class="simopang-input w-full px-3 py-2 text-sm" required>
                         </div>
                         <div>
@@ -118,8 +118,8 @@
                         <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                             <tr>
                                 <th class="py-2 pr-3">No</th>
-                                <th class="py-2 pr-3">Satker</th>
-                                <th class="py-2 pr-3">Item</th>
+                                <th class="py-2 pr-3">Subsatker</th>
+                                <th class="py-2 pr-3">Uraian</th>
                                 <th class="py-2 pr-3">Pagu</th>
                                 @foreach(\App\Models\RencanaAnggaran::BULAN as $bln)
                                     <th class="py-2 pr-3">{{ \App\Models\RencanaAnggaran::BULAN_LABEL[$bln] }}</th>

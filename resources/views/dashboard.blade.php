@@ -231,7 +231,7 @@
                 <div class="relative overflow-hidden rounded-xl bg-polri-dark border border-polri-dark-light p-5">
                     <img src="{{ asset('images/logo-tikpolri.png') }}" class="absolute -right-6 -top-6 w-40 opacity-10 pointer-events-none" alt="">
                     <p class="text-white font-semibold relative z-10">Selamat datang di Dashboard Admin!</p>
-                    <p class="text-sm text-polri-silver-dark relative z-10">Anda bertugas memproses pengajuan anggaran dari <span class="text-white font-medium">{{ $user->unit_kerja ?? '-' }}</span>.</p>
+                    <p class="text-sm text-polri-silver-dark relative z-10">Anda bertugas memproses pengajuan anggaran dari seluruh unit kerja.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -247,6 +247,17 @@
                         <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Sisa Anggaran</p>
                         <p class="text-xl font-bold text-white mt-1">Rp {{ number_format($sisaPaguAdmin, 0, ',', '.') }}</p>
                     </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    @foreach($unitKerja as $unit)
+                    <div class="simopang-card p-5 border-l-4 border-l-green-500">
+                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">{{ $unit['nama'] }}</p>
+                        <p class="text-xs text-polri-silver-dark mt-1">Anggaran Terserap</p>
+                        <p class="text-xl font-bold text-green-400 mt-1">Rp {{ number_format($unit['realisasi'], 0, ',', '.') }}</p>
+                        <p class="text-xs text-polri-silver-dark mt-2">Pagu: Rp {{ number_format($unit['pagu'], 0, ',', '.') }}</p>
+                    </div>
+                    @endforeach
                 </div>
 
                 <div class="simopang-card p-5">

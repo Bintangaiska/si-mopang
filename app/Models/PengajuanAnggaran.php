@@ -11,6 +11,7 @@ class PengajuanAnggaran extends Model
         'user_id',
         'unit_kerja',
         'urusan',
+        'uraian',
         'tanggal_pengajuan',
         'jumlah',
         'file_rka',

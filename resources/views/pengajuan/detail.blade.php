@@ -25,6 +25,10 @@
                         <dt class="text-polri-silver-dark">Nama Urusan</dt>
                         <dd class="text-white">{{ $pengajuan->urusan ?? '-' }}</dd>
                     </div>
+                    <div class="col-span-2">
+                        <dt class="text-polri-silver-dark">Uraian / Nama Anggaran</dt>
+                        <dd class="text-white">{{ $pengajuan->uraian ?? '-' }}</dd>
+                    </div>
                     <div>
                         <dt class="text-polri-silver-dark">Pengaju</dt>
                         <dd class="text-white">{{ $pengajuan->user->name }}</dd>
@@ -66,7 +70,7 @@
                 </div>
             </div>
 
-            @if(auth()->user()->role === 'admin' || auth()->user()->role === 'super_admin')
+            @if(auth()->user()->role === 'admin')
             <div class="simopang-card p-6">
                 <h3 class="font-semibold text-white mb-4">Proses Pengajuan</h3>
                 <form method="POST" action="{{ route('pengajuan.update-status', $pengajuan->id) }}">

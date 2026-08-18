@@ -20,6 +20,7 @@
                         <tr>
                             <th class="py-2">Sub Satuan Kerja</th>
                             <th class="py-2">Urusan</th>
+                            <th class="py-2">Uraian</th>
                             <th class="py-2">Pengaju</th>
                             <th class="py-2">Tanggal</th>
                             <th class="py-2">Jumlah</th>
@@ -32,6 +33,7 @@
                         <tr class="border-b border-polri-dark-light">
                             <td class="py-2 text-polri-silver">{{ $item->unit_kerja }}</td>
                             <td class="py-2 text-polri-silver">{{ $item->urusan ?? '-' }}</td>
+                            <td class="py-2 text-polri-silver">{{ $item->uraian ?? '-' }}</td>
                             <td class="py-2 text-polri-silver">{{ $item->user->name }}</td>
                             <td class="py-2 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
                             <td class="py-2 text-polri-silver">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>

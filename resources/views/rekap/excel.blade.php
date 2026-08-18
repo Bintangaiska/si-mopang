@@ -69,6 +69,7 @@
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Tanggal</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Sub Satuan Kerja</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Urusan</Data></Cell>
+                <Cell ss:StyleID="Header"><Data ss:Type="String">Uraian</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Pengaju</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Jumlah (Rp)</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Status</Data></Cell>
@@ -81,6 +82,7 @@
                 <Cell ss:StyleID="Wrap"><Data ss:Type="String">{{ $item->tanggal_pengajuan->format('d/m/Y') }}</Data></Cell>
                 <Cell ss:StyleID="Wrap"><Data ss:Type="String">{{ $item->unit_kerja }}</Data></Cell>
                 <Cell ss:StyleID="Wrap"><Data ss:Type="String">{{ $item->urusan ?? '-' }}</Data></Cell>
+                <Cell ss:StyleID="Wrap"><Data ss:Type="String">{{ $item->uraian ?? '-' }}</Data></Cell>
                 <Cell ss:StyleID="Wrap"><Data ss:Type="String">{{ $item->user?->name ?? '-' }}</Data></Cell>
                 <Cell ss:StyleID="Angka"><Data ss:Type="Number">{{ $item->jumlah }}</Data></Cell>
                 <Cell ss:StyleID="Wrap"><Data ss:Type="String">{{ $item->status }}</Data></Cell>
@@ -95,7 +97,7 @@
             @endforelse
 
             <Row>
-                <Cell ss:MergeAcross="4" ss:StyleID="Total">
+                <Cell ss:MergeAcross="5" ss:StyleID="Total">
                     <Data ss:Type="String">TOTAL</Data>
                 </Cell>
                 <Cell ss:StyleID="Total"><Data ss:Type="Number">{{ $total }}</Data></Cell>
