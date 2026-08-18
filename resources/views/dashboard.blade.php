@@ -264,46 +264,64 @@
                     <div class="flex flex-col sm:flex-row justify-between gap-3 mb-4">
                         <h3 class="text-sm font-semibold text-white">DATA MONITORING ANGGARAN</h3>
                         <div class="flex gap-2">
-                            <input type="text" id="searchTableAdmin" placeholder="Cari urusan..." class="simopang-input text-sm px-3 py-1.5">
+                            <input type="text" id="searchTableAdmin" placeholder="Cari urusan, uraian..." class="simopang-input text-sm px-3 py-1.5">
                             <a href="{{ route('rekap.export-excel-admin') }}" class="px-3 py-1.5 text-xs border border-green-600 rounded-lg text-green-400 hover:bg-green-600/10">Export Excel</a>
                         </div>
                     </div>
-                    <table class="w-full text-sm text-left" id="monitoringTableAdmin">
-                        <thead class="border-b border-polri-dark-light text-polri-silver-dark">
-                            <tr>
-                                <th class="py-2">Subsatker</th>
-                                <th class="py-2">Tanggal</th>
-                                <th class="py-2">Jumlah</th>
-                                <th class="py-2">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($pengajuanAdmin as $item)
-                            <tr class="border-b border-polri-dark-light table-row">
-                                <td class="py-2 text-polri-silver">{{ $item->unit_kerja }}<span class="block text-xs text-polri-silver-dark">{{ $item->urusan ?? '' }}</span></td>
-                                <td class="py-2 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
-                                <td class="py-2 text-polri-silver">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
-                                <td class="py-2">
-                                    @php
-                                        $warna = match($item->status) {
-                                            'Selesai' => 'bg-green-500/20 text-green-400',
-                                            'Diproses' => 'bg-yellow-500/20 text-yellow-400',
-                                            'Ditolak' => 'bg-red-500/20 text-red-400',
-                                            default => 'bg-gray-500/20 text-gray-300',
-                                        };
-                                    @endphp
-                                    <span class="px-2 py-1 rounded text-xs {{ $warna }}">{{ $item->status }}</span>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="4" class="py-8 text-center text-polri-silver-dark">Belum ada pengajuan anggaran untuk subsatker ini.</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left" id="monitoringTableAdmin">
+                            <thead class="border-b border-polri-dark-light text-polri-silver-dark">
+                                <tr>
+                                    <th class="py-3 px-3">No</th>
+                                    <th class="py-3 px-3">Subsatker</th>
+                                    <th class="py-3 px-3">Uraian</th>
+                                    <th class="py-3 px-3">Tanggal</th>
+                                    <th class="py-3 px-3 text-right">Jumlah</th>
+                                    <th class="py-3 px-3 text-center">Status</th>
+                                    <th class="py-3 px-3 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($pengajuanAdmin as $item)
+                                <tr class="border-b border-polri-dark-light/50 hover:bg-white/[0.02] transition-colors table-row">
+                                    <td class="py-3 px-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
+                                    <td class="py-3 px-3">
+                                        <span class="text-white font-medium">{{ $item->unit_kerja }}</span>
+                                        <span class="block text-xs text-polri-silver-dark">{{ $item->urusan ?? '' }}</span>
+                                    </td>
+                                    <td class="py-3 px-3 text-polri-silver">{{ $item->uraian ?? '-' }}</td>
+                                    <td class="py-3 px-3 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
+                                    <td class="py-3 px-3 text-right text-white font-medium">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                                    <td class="py-3 px-3 text-center">
+                                        @php
+                                            $warna = match($item->status) {
+                                                'Selesai' => 'bg-green-500/20 text-green-400',
+                                                'Diproses' => 'bg-yellow-500/20 text-yellow-400',
+                                                'Ditolak' => 'bg-red-500/20 text-red-400',
+                                                default => 'bg-gray-500/20 text-gray-300',
+                                            };
+                                        @endphp
+                                        <span class="px-2.5 py-1 rounded-full text-xs font-medium {{ $warna }}">{{ $item->status }}</span>
+                                    </td>
+                                    <td class="py-3 px-3 text-center">
+                                        <a href="{{ route('pengajuan.show', $item->id) }}"
+                                           class="inline-flex items-center gap-1 px-2.5 py-1 text-xs text-polri-red hover:bg-polri-red/10 rounded transition">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                            Detail
+                                        </a>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="py-8 text-center text-polri-silver-dark">Belum ada pengajuan anggaran.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                     <p class="text-xs text-polri-silver-dark mt-3" id="tableInfoAdmin"></p>
                 </div>
+
 
                  <div class="simopang-card p-5 overflow-x-auto">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
@@ -435,27 +453,51 @@
                 </div>
 
                 <div class="simopang-card p-5">
-                    <h3 class="text-lg font-semibold text-white mb-4">Riwayat Pengajuan Terbaru</h3>
-                    <table class="w-full text-sm text-left">
-                        <thead class="border-b border-polri-dark-light text-polri-silver-dark">
-                            <tr>
-                                <th class="py-2">Tanggal</th>
-                                <th class="py-2">Uraian</th>
-                                <th class="py-2">Jumlah</th>
-                                <th class="py-2">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($pengajuanUserTerbaru->take(2) as $item)
-                            <tr class="border-b border-polri-dark-light">
-                                <td class="py-2 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
-                                <td class="py-2 text-polri-silver">{{ $item->uraian }}</td>
-                                <td class="py-2 text-polri-silver">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
-                                <td class="py-2 text-polri-silver">{{ $item->status }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+                        <div>
+                            <h3 class="text-sm font-semibold text-white">RIWAYAT PENGAJUAN TERBARU</h3>
+                            <p class="text-xs text-polri-silver-dark mt-1">Pengajuan terakhir yang Anda ajukan</p>
+                        </div>
+                        <a href="{{ route('pengajuan.riwayat') }}" class="text-xs text-polri-red hover:underline">Lihat Semua &rarr;</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="border-b border-polri-dark-light text-polri-silver-dark">
+                                <tr>
+                                    <th class="py-3 px-3">No</th>
+                                    <th class="py-3 px-3">Uraian</th>
+                                    <th class="py-3 px-3">Tanggal</th>
+                                    <th class="py-3 px-3 text-right">Jumlah</th>
+                                    <th class="py-3 px-3 text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($pengajuanUserTerbaru->take(5) as $item)
+                                <tr class="border-b border-polri-dark-light/50 hover:bg-white/[0.02] transition-colors">
+                                    <td class="py-3 px-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
+                                    <td class="py-3 px-3 text-white font-medium">{{ $item->uraian ?? '-' }}</td>
+                                    <td class="py-3 px-3 text-polri-silver">{{ $item->tanggal_pengajuan->format('d M Y') }}</td>
+                                    <td class="py-3 px-3 text-right text-white font-medium">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                                    <td class="py-3 px-3 text-center">
+                                        @php
+                                            $warna = match($item->status) {
+                                                'Selesai' => 'bg-green-500/20 text-green-400',
+                                                'Diproses' => 'bg-yellow-500/20 text-yellow-400',
+                                                'Ditolak' => 'bg-red-500/20 text-red-400',
+                                                default => 'bg-gray-500/20 text-gray-300',
+                                            };
+                                        @endphp
+                                        <span class="px-2.5 py-1 rounded-full text-xs font-medium {{ $warna }}">{{ $item->status }}</span>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="py-8 text-center text-polri-silver-dark">Belum ada riwayat pengajuan.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                  <div class="simopang-card p-5 overflow-x-auto">

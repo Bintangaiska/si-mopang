@@ -122,6 +122,12 @@ class DashboardController extends Controller
         $sisaPaguAdmin = max($paguAdmin - $totalTerserapAdmin, 0);
         $pengajuanAdmin = PengajuanAnggaran::with('user')
             ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+
+        $riwayatAdminTerbaru = PengajuanAnggaran::with('user')
+            ->orderBy('created_at', 'desc')
+            ->take(15)
             ->get();
 
         $rencanaAnggaranSemua = RencanaAnggaran::orderBy('satker')->orderBy('id')
@@ -172,6 +178,7 @@ class DashboardController extends Controller
             'rencanaTotal' => $rencanaTotal,
             'rencanaAnggaranSemua' => $rencanaAnggaranSemua,
             'rencanaTotalSemua' => $rencanaTotalSemua,
+            'riwayatAdminTerbaru' => $riwayatAdminTerbaru,
         ]);
     }
 
