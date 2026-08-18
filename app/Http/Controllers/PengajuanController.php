@@ -52,11 +52,14 @@ class PengajuanController extends Controller
             'urusan' => ['required', 'string', Rule::in(collect(config('unitkerja.satker'))->flatten()->all())],
             'tanggal_pengajuan' => ['required', 'date'],
             'jumlah_pengajuan' => ['required', 'numeric', 'min:1'],
-            'rka' => ['required', 'file', 'mimes:pdf', 'max:10240'],
+            'rka' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
             'perwabku' => ['required', 'file', 'mimes:pdf', 'max:10240'],
         ]);
 
-        $fileRka = $request->file('rka')->store('pengajuan/rka', 'public');
+        $fileRka = $request->hasFile('rka')
+            ? $request->file('rka')->store('pengajuan/rka', 'public')
+            : null;
+
         $filePerwabku = $request->file('perwabku')->store('pengajuan/perwabku', 'public');
 
         PengajuanAnggaran::create([

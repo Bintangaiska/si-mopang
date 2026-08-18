@@ -93,22 +93,28 @@
                                class="simopang-input w-full px-3 py-2" required>
                     </div>
 
-                    <div class="mb-4">
+                   <div class="mb-4">
                         <label class="block text-sm text-polri-silver-dark mb-1">
                             Laporan Rencana Kebutuhan Anggaran
-                            <span class="text-polri-red">*wajib PDF, maks 10MB</span>
+                            <span class="text-polri-silver-dark">(opsional, PDF maks 10MB)</span>
                         </label>
                         <input type="file" name="rka" accept=".pdf"
-                               class="w-full text-sm text-polri-silver file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-polri-red file:text-white file:text-xs hover:file:bg-red-800" required>
+                            class="w-full text-sm text-polri-silver file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-polri-red file:text-white file:text-xs hover:file:bg-red-800">
+                        @error('rka')
+                            <p class="text-xs text-red-400 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <div class="mb-6">
+                   <div class="mb-6">
                         <label class="block text-sm text-polri-silver-dark mb-1">
                             Laporan Perwabku Bulan Lalu
                             <span class="text-polri-red">*wajib PDF, maks 10MB</span>
                         </label>
                         <input type="file" name="perwabku" accept=".pdf"
-                               class="w-full text-sm text-polri-silver file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-polri-red file:text-white file:text-xs hover:file:bg-red-800" required>
+                            class="w-full text-sm text-polri-silver file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-polri-red file:text-white file:text-xs hover:file:bg-red-800" required>
+                        @error('perwabku')
+                            <p class="text-xs text-red-400 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="flex justify-end">
