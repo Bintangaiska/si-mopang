@@ -327,50 +327,99 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
                     <h3 class="text-sm font-semibold text-white">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
                     <div class="flex gap-2">
+                        <input type="text" id="searchRencanaAdmin" placeholder="Cari uraian..." class="simopang-input text-sm px-3 py-1.5">
+                        <select id="filterSatkerRencanaAdmin" class="simopang-input text-sm px-3 py-1.5">
+                            <option value="">Semua Subsatker</option>
+                            @foreach(array_keys(config('unitkerja.satker')) as $sk)
+                                <option value="{{ $sk }}">{{ $sk }}</option>
+                            @endforeach
+                        </select>
                         <a href="{{ route('rencana.export-excel') }}" class="px-3 py-1.5 text-xs border border-green-600 rounded-lg text-green-400 hover:bg-green-600/10">Export Excel</a>
                         <a href="{{ route('rencana.export-pdf') }}" class="px-3 py-1.5 text-xs border border-red-600 rounded-lg text-red-400 hover:bg-red-600/10">Export PDF</a>
                     </div>
                 </div>
-                <table class="w-full text-xs text-left whitespace-nowrap">
-                    <thead class="border-b border-polri-dark-light text-polri-silver-dark">
-                        <tr>
-                            <th class="py-2 pr-3">No</th>
-                            <th class="py-2 pr-3">Subsatker</th>
-                            <th class="py-2 pr-3">Uraian</th>
-                            <th class="py-2 pr-3">Pagu</th>
-                            @foreach(\App\Models\RencanaAnggaran::BULAN as $bln)
-                                <th class="py-2 pr-3">{{ \App\Models\RencanaAnggaran::BULAN_LABEL[$bln] }}</th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($rencanaAnggaran as $item)
-                        <tr class="border-b border-polri-dark-light">
-                            <td class="py-2 pr-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
-                            <td class="py-2 pr-3 text-white">{{ $item['satker'] }}</td>
-                            <td class="py-2 pr-3 text-polri-silver">{{ $item['item'] }}</td>
-                            <td class="py-2 pr-3 text-polri-silver">Rp {{ number_format($item['pagu'], 0, ',', '.') }}</td>
-                            @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
-                                <td class="py-2 pr-3 text-polri-silver-dark">{{ $item['bulan'][$bln] > 0 ? number_format($item['bulan'][$bln], 0, ',', '.') : '-' }}</td>
-                            @endforeach
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran untuk subsatker ini.</td>
-                        </tr>
-                        @endforelse
-                        @if(count($rencanaAnggaran) > 0)
-                        <tr class="bg-polri-dark-light/40 font-semibold">
-                            <td colspan="3" class="py-2 pr-3 text-white uppercase text-[10px] tracking-wider">Total</td>
-                            <td class="py-2 pr-3 text-white">Rp {{ number_format($rencanaTotal['pagu'], 0, ',', '.') }}</td>
-                            @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
-                                <td class="py-2 pr-3 text-white">{{ $rencanaTotal['bulan'][$bln] > 0 ? number_format($rencanaTotal['bulan'][$bln], 0, ',', '.') : '-' }}</td>
-                            @endforeach
-                        </tr>
-                        @endif
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left whitespace-nowrap" id="rencanaTableAdmin">
+                        <thead class="border-b border-polri-dark-light text-polri-silver-dark">
+                            <tr>
+                                <th class="py-3 px-3">No</th>
+                                <th class="py-3 px-3">Subsatker</th>
+                                <th class="py-3 px-3">Uraian</th>
+                                <th class="py-3 px-3 text-right">Pagu</th>
+                                @foreach(\App\Models\RencanaAnggaran::BULAN as $bln)
+                                    <th class="py-3 px-3 text-right">{{ \App\Models\RencanaAnggaran::BULAN_LABEL[$bln] }}</th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($rencanaAnggaran as $item)
+                            <tr class="border-b border-polri-dark-light/50 hover:bg-white/[0.02] transition-colors rencana-row-admin" data-satker="{{ $item['satker'] }}">
+                                <td class="py-3 px-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
+                                <td class="py-3 px-3">
+                                    <span class="text-white font-medium">{{ $item['satker'] }}</span>
+                                </td>
+                                <td class="py-3 px-3 text-polri-silver">{{ $item['item'] }}</td>
+                                <td class="py-3 px-3 text-right text-white font-medium">Rp {{ number_format($item['pagu'], 0, ',', '.') }}</td>
+                                @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
+                                    <td class="py-3 px-3 text-right text-polri-silver-dark">{{ $item['bulan'][$bln] > 0 ? number_format($item['bulan'][$bln], 0, ',', '.') : '-' }}</td>
+                                @endforeach
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="16" class="py-6 text-center text-polri-silver-dark">Belum ada rencana anggaran.</td>
+                            </tr>
+                            @endforelse
+                            @if(count($rencanaAnggaran) > 0)
+                            <tr class="bg-polri-dark-light/40 font-semibold rencana-row-admin" id="rencanaTotalAdmin">
+                                <td colspan="3" class="py-3 px-3 text-white uppercase text-[10px] tracking-wider">Total</td>
+                                <td class="py-3 px-3 text-right text-white">Rp {{ number_format($rencanaTotal['pagu'], 0, ',', '.') }}</td>
+                                @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
+                                    <td class="py-3 px-3 text-right text-white">{{ $rencanaTotal['bulan'][$bln] > 0 ? number_format($rencanaTotal['bulan'][$bln], 0, ',', '.') : '-' }}</td>
+                                @endforeach
+                            </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-polri-silver-dark mt-3" id="rencanaInfoAdmin"></p>
             </div>
+
+            <script>
+                (function() {
+                    const searchInput = document.getElementById('searchRencanaAdmin');
+                    const filterSelect = document.getElementById('filterSatkerRencanaAdmin');
+                    const rows = document.querySelectorAll('.rencana-row-admin:not(#rencanaTotalAdmin)');
+                    const totalRow = document.getElementById('rencanaTotalAdmin');
+                    const info = document.getElementById('rencanaInfoAdmin');
+
+                    function applyFilter() {
+                        const keyword = searchInput.value.toLowerCase();
+                        const satker = filterSelect.value;
+                        let visible = 0;
+
+                        rows.forEach(row => {
+                            const text = row.textContent.toLowerCase();
+                            const rowSatker = row.dataset.satker || '';
+                            const matchSearch = !keyword || text.includes(keyword);
+                            const matchSatker = !satker || rowSatker === satker;
+                            const show = matchSearch && matchSatker;
+                            row.style.display = show ? '' : 'none';
+                            if (show) visible++;
+                        });
+
+                        if (totalRow) {
+                            totalRow.style.display = (keyword || satker) ? 'none' : '';
+                        }
+
+                        info.textContent = `Menampilkan ${visible} dari ${rows.length} data`;
+                    }
+
+                    searchInput.addEventListener('input', applyFilter);
+                    filterSelect.addEventListener('change', applyFilter);
+                    applyFilter();
+                })();
+            </script>
+            
 
             @else
                 {{-- ========== DASHBOARD USER ========== --}}
