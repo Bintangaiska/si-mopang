@@ -329,7 +329,7 @@
                     <span class="shrink-0 w-8 h-8 rounded-full bg-polri-red/20 text-polri-red text-sm flex items-center justify-center font-semibold">4</span>
                     <div>
                         <p class="text-white font-medium text-sm">Verifikasi Admin</p>
-                        <p class="text-polri-silver-dark text-sm mt-1">Pengajuan diproses dan diverifikasi oleh Subbagrenmin.</p>
+                        <p class="text-polri-silver-dark text-sm mt-1">Pengajuan diproses dan diverifikasi oleh Urren.</p>
                     </div>
                 </div>
                 <div class="flex gap-4">
@@ -367,7 +367,7 @@
             <div class="glass-card rounded-2xl p-6">
                 <div class="w-10 h-1 bg-polri-red rounded-full mb-4"></div>
                 <h3 class="font-semibold text-polri-gray mb-2">Verifikasi Cepat</h3>
-                <p class="text-sm text-polri-silver-dark">Proses persetujuan anggaran oleh Subbagrenmin dilakukan langsung melalui sistem.</p>
+                <p class="text-sm text-polri-silver-dark">Proses persetujuan anggaran oleh Urren dilakukan langsung melalui sistem.</p>
             </div>
         </div>
     </div>
