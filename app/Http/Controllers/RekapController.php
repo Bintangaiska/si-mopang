@@ -65,14 +65,9 @@ class RekapController extends Controller
 
     public function exportExcelAdmin(): Response
     {
-        $user = auth()->user();
-        $query = PengajuanAnggaran::with('user');
-
-        if ($user->unit_kerja) {
-            $query->where('unit_kerja', $user->unit_kerja);
-        }
-
-        $pengajuan = $query->orderBy('tanggal_pengajuan', 'desc')->get();
+        $pengajuan = PengajuanAnggaran::with('user')
+            ->orderBy('tanggal_pengajuan', 'desc')
+            ->get();
 
         $xml = view('rekap.excel', [
             'pengajuan' => $pengajuan,
@@ -81,8 +76,7 @@ class RekapController extends Controller
 
         $xml = preg_replace('/^\s+|\s+$/m', '', $xml);
 
-        $satker = strtolower(str_replace(' ', '-', $user->unit_kerja ?? 'all'));
-        $filename = "rekap-{$satker}-" . now()->format('Y-m-d') . '.xls';
+        $filename = "rekap-semua-" . now()->format('Y-m-d') . '.xls';
 
         return response($xml, 200, [
             'Content-Type' => 'application/vnd.ms-excel',

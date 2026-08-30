@@ -209,9 +209,22 @@
         document.addEventListener('input', function (e) {
             var input = e.target;
             if (input.classList && input.classList.contains('rencana-nominal')) {
-                var caret = input.value.length;
-                input.value = formatRupiah(input.value);
-                input.setSelectionRange(caret, caret);
+                var raw = input.value;
+                var caret = input.selectionStart || raw.length;
+
+                var digitsBefore = raw.slice(0, caret).replace(/\D/g, '').length;
+
+                var digits = raw.replace(/\D/g, '').replace(/^0+(?=\d)/, '');
+                var formatted = digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+                input.value = formatted;
+
+                var pos = 0, count = 0;
+                while (pos < formatted.length && count < digitsBefore) {
+                    if (/\d/.test(formatted[pos])) count++;
+                    pos++;
+                }
+                input.setSelectionRange(pos, pos);
             }
         });
 
