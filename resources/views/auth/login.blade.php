@@ -50,7 +50,8 @@
         </div>
 
         <button type="submit"
-            class="w-full py-3 rounded-lg text-white text-sm font-semibold tracking-wide bg-gradient-to-r from-[#C8102E] to-[#1F2937] hover:opacity-90 transition">
+            class="w-full py-3 rounded-lg font-semibold tracking-wide transition pointer-events-auto cursor-pointer"
+            style="color:#ffffff; background-color:#C8102E; background-image:linear-gradient(90deg,#C8102E 0%,#1F2937 100%);">
             MASUK SISTEM
         </button>
     </form>

@@ -103,7 +103,7 @@
                 @auth
                     <a href="{{ route('dashboard') }}" class="px-5 py-2 text-sm bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-lg hover:opacity-90 transition">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="px-5 py-2 text-sm text-polri-gray hover:text-white transition">Log in</a>
+                    <a href="{{ route('login') }}" class="px-5 py-2 text-sm bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-lg hover:opacity-90 transition">Log in</a>
                     <a href="{{ route('register') }}" class="px-5 py-2 text-sm bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-lg hover:opacity-90 transition">Register</a>
                 @endauth
             </div>

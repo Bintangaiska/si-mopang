@@ -21,6 +21,12 @@
                         <p class="text-xs text-polri-silver-dark mt-1">Semua pengajuan dari seluruh unit kerja</p>
                     </div>
                     <div class="flex gap-2">
+                        <select id="filterSatkerManajemen" class="simopang-input text-sm px-3 py-1.5">
+                            <option value="">Semua Subsatker</option>
+                            @foreach(array_keys(config('unitkerja.satker')) as $sk)
+                                <option value="{{ $sk }}">{{ $sk }}</option>
+                            @endforeach
+                        </select>
                         <input type="text" id="searchManajemen" placeholder="Cari subsatker, uraian..." class="simopang-input text-sm px-3 py-1.5">
                     </div>
                 </div>
@@ -42,7 +48,7 @@
                         </thead>
                         <tbody>
                             @forelse($pengajuan as $item)
-                            <tr class="border-b border-polri-dark-light/50 hover:bg-white/[0.02] transition-colors table-row">
+                            <tr class="border-b border-polri-dark-light/50 hover:bg-white/[0.02] transition-colors table-row" data-satker="{{ $item->unit_kerja }}">
                                 <td class="py-3 px-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
                                 <td class="py-3 px-3">
                                     <span class="text-white font-medium">{{ $item->unit_kerja }}</span>
@@ -92,6 +98,7 @@
 
     <script>
         const searchInput = document.getElementById('searchManajemen');
+        const filterSelect = document.getElementById('filterSatkerManajemen');
         const rows = document.querySelectorAll('#manajemenTable .table-row');
         const info = document.getElementById('manajemenInfo');
 
@@ -100,14 +107,22 @@
             info.textContent = `Menampilkan ${visible} dari ${rows.length} data`;
         }
 
-        searchInput.addEventListener('input', function () {
-            const keyword = this.value.toLowerCase();
+        function applyFilter() {
+            const keyword = searchInput.value.toLowerCase();
+            const satker = filterSelect.value;
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(keyword) ? '' : 'none';
+                const rowSatker = row.dataset.satker || '';
+                const matchSearch = !keyword || text.includes(keyword);
+                const matchSatker = !satker || rowSatker === satker;
+                row.style.display = (matchSearch && matchSatker) ? '' : 'none';
             });
             updateInfo();
-        });
+        }
+
+        searchInput.addEventListener('input', applyFilter);
+        filterSelect.addEventListener('change', applyFilter);
+        applyFilter();
 
         updateInfo();
     </script>
