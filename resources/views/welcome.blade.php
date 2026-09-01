@@ -80,7 +80,7 @@
     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-polri-red to-transparent"></div>
 
     {{-- Navbar --}}
-    <nav class="relative z-10 border-b border-gray-700 bg-gray-900/50 backdrop-blur-md">
+    <nav x-data="{ openAuth: false }" class="relative z-10 border-b border-gray-700 bg-gray-900/50 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <img
@@ -99,13 +99,34 @@
                     </span>
                 </div>
             </div>
-            <div class="space-x-3">
+
+            {{-- Desktop: tombol tampil normal seperti semula --}}
+            <div class="hidden sm:flex space-x-3">
                 @auth
                     <a href="{{ route('dashboard') }}" class="px-5 py-2 text-sm bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-lg hover:opacity-90 transition">Dashboard</a>
                 @else
                     <a href="{{ route('login') }}" class="px-5 py-2 text-sm bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-lg hover:opacity-90 transition">Log in</a>
                     <a href="{{ route('register') }}" class="px-5 py-2 text-sm bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-lg hover:opacity-90 transition">Register</a>
                 @endauth
+            </div>
+
+            {{-- Mobile: ikon hamburger, tombol disembunyikan di dalam card --}}
+            <div class="relative sm:hidden">
+                <button @click="openAuth = !openAuth" @click.away="openAuth = false" class="p-2 text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+                <div x-show="openAuth" x-transition style="display: none;"
+                    class="absolute right-0 mt-2 w-44 bg-gray-900 border border-gray-700 rounded-lg shadow-xl overflow-hidden z-50">
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="block px-4 py-3 text-sm text-white hover:bg-white/10">Dashboard</a>
+                    @else
+                        <a href="{{ route('login') }}" class="block px-4 py-3 text-sm text-white hover:bg-white/10 border-b border-gray-700">Log in</a>
+                        <a href="{{ route('register') }}" class="block px-4 py-3 text-sm text-white hover:bg-white/10">Register</a>
+                    @endauth
+                </div>
             </div>
         </div>
     </nav>
@@ -166,7 +187,7 @@
                     digitalisasi pengajuan, monitoring, dan realisasi anggaran secara
                     terstruktur, transparan, dan tepat waktu.
                 </p>
-               
+
                 @guest
                     <a href="{{ route('login') }}"
                        class="inline-flex items-center justify-center px-10 py-3.5 bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-xl hover:opacity-90 transition font-semibold text-base shadow-lg">
@@ -264,7 +285,7 @@
                     </p>
                     </div>
                 </div>
-            
+
 
                 <div class="space-y-5">
                     <div class="flex gap-4">
@@ -279,7 +300,7 @@
                     </p>
                     </div>
                 </div>
-            
+
 
                 <div class="space-y-5"></div>
                     <div class="flex gap-4">
@@ -290,7 +311,7 @@
                         DIPA Bidang Teknologi Informasi dan Komunikasi Polda Jawa Timur
                         Tahun Anggaran 2026.
                     </p>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
