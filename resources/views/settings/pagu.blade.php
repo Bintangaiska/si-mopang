@@ -113,8 +113,11 @@
                 </form>
 
                 {{-- Tabel data rencana --}}
+                <div class="flex justify-end mb-3">
+                    <input type="text" id="searchRencanaSettings" placeholder="Cari uraian, subsatker..." class="simopang-input text-sm px-3 py-1.5 w-64">
+                </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left whitespace-nowrap">
+                    <table class="w-full text-xs text-left whitespace-nowrap" id="rencanaTableSettings">
                         <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                             <tr>
                                 <th class="py-2 pr-3">No</th>
@@ -129,7 +132,7 @@
                         </thead>
                         <tbody>
                             @forelse($rencanaAnggaran as $i => $item)
-                            <tr class="border-b border-polri-dark-light">
+                            <tr class="border-b border-polri-dark-light rencana-row-settings" data-satker="{{ $item->satker }}">
                                 <td class="py-2 pr-3 text-polri-silver-dark">{{ $i + 1 }}</td>
                                 <td class="py-2 pr-3 text-white">{{ $item->satker }}</td>
                                 <td class="py-2 pr-3 text-polri-silver">{{ $item->item }}</td>
@@ -200,6 +203,24 @@
         function toggleEditRencana(id) {
             document.getElementById('edit-row-' + id).classList.toggle('hidden');
         }
+
+        (function () {
+            var input = document.getElementById('searchRencanaSettings');
+            var rows = document.querySelectorAll('.rencana-row-settings');
+            input.addEventListener('input', function () {
+                var kw = this.value.toLowerCase();
+                rows.forEach(function (row) {
+                    var show = row.textContent.toLowerCase().includes(kw);
+                    row.style.display = show ? '' : 'none';
+                    var id = row.getAttribute('data-satker');
+                    var editRow = row.nextElementSibling;
+                    while (editRow && editRow.id && editRow.id.indexOf('edit-row-') === 0) {
+                        editRow.style.display = show ? '' : 'none';
+                        editRow = editRow.nextElementSibling;
+                    }
+                });
+            });
+        })();
 
         function formatRupiah(value) {
             var digits = value.replace(/\D/g, '').replace(/^0+(?=\d)/, '');

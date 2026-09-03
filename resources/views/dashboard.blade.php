@@ -172,11 +172,12 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
                         <h3 class="text-sm font-semibold text-white">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
                         <div class="flex gap-2">
+                            <input type="text" id="searchRencanaSuper" placeholder="Cari uraian, subsatker..." class="simopang-input text-sm px-3 py-1.5">
                             <a href="{{ route('rencana.export-excel') }}" class="px-3 py-1.5 text-xs border border-green-600 rounded-lg text-green-400 hover:bg-green-600/10">Export Excel</a>
                             <a href="{{ route('rencana.export-pdf') }}" class="px-3 py-1.5 text-xs border border-red-600 rounded-lg text-red-400 hover:bg-red-600/10">Export PDF</a>
                         </div>
                     </div>
-                    <table class="w-full text-xs text-left whitespace-nowrap">
+                    <table class="w-full text-xs text-left whitespace-nowrap" id="rencanaTableSuper">
                         <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                             <tr>
                                 <th class="py-2 pr-3">No</th>
@@ -199,7 +200,7 @@
                         </thead>
                         <tbody>
                             @forelse($rencanaAnggaranSemua as $item)
-                            <tr class="border-b border-polri-dark-light">
+                            <tr class="border-b border-polri-dark-light rencana-row-super" data-satker="{{ $item['satker'] }}">
                                 <td class="py-2 pr-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
                                 <td class="py-2 pr-3 text-white">{{ $item['satker'] }}</td>
                                 <td class="py-2 pr-3 text-polri-silver">{{ $item['item'] }}</td>
@@ -214,7 +215,7 @@
                             </tr>
                             @endforelse
                             @if(count($rencanaAnggaranSemua) > 0)
-                            <tr class="bg-polri-dark-light/40 font-semibold">
+                            <tr class="bg-polri-dark-light/40 font-semibold" id="rencanaTotalSuper">
                                 <td colspan="3" class="py-2 pr-3 text-white uppercase text-[10px] tracking-wider">Total</td>
                                 <td class="py-2 pr-3 text-white">Rp {{ number_format($rencanaTotalSemua['pagu'], 0, ',', '.') }}</td>
                                 @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
@@ -224,7 +225,30 @@
                             @endif
                         </tbody>
                     </table>
+                    <p class="text-xs text-polri-silver-dark mt-3" id="rencanaInfoSuper"></p>
                 </div>
+
+            <script>
+                (function() {
+                    const input = document.getElementById('searchRencanaSuper');
+                    const rows = document.querySelectorAll('.rencana-row-super');
+                    const totalRow = document.getElementById('rencanaTotalSuper');
+                    const info = document.getElementById('rencanaInfoSuper');
+                    function apply() {
+                        const kw = input.value.toLowerCase();
+                        let visible = 0;
+                        rows.forEach(r => {
+                            const show = r.textContent.toLowerCase().includes(kw);
+                            r.style.display = show ? '' : 'none';
+                            if (show) visible++;
+                        });
+                        if (totalRow) totalRow.style.display = kw ? 'none' : '';
+                        info.textContent = `Menampilkan ${visible} dari ${rows.length} data`;
+                    }
+                    input.addEventListener('input', apply);
+                    apply();
+                })();
+            </script>
 
             @elseif($role === 'admin')
                 {{-- ========== DASHBOARD ADMIN ========== --}}
@@ -437,7 +461,7 @@
                         </p>
                     </div>
                     <div class="simopang-card p-5">
-                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Total Pagu Bulanan</p>
+                        <p class="text-xs text-polri-silver-dark uppercase tracking-wide">Total Pagu </p>
                         <p class="text-2xl font-semibold text-white mt-1">
                             Rp {{ number_format($paguUser, 0, ',', '.') }}
                         </p>
@@ -553,11 +577,12 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
                     <h3 class="text-sm font-semibold text-white">RENCANA PENDISTRIBUSIAN ANGGARAN DIPA BID TIK POLDA JATIM 2026</h3>
                     <div class="flex gap-2">
+                        <input type="text" id="searchRencanaUser" placeholder="Cari uraian, subsatker..." class="simopang-input text-sm px-3 py-1.5">
                         <a href="{{ route('rencana.export-excel') }}" class="px-3 py-1.5 text-xs border border-green-600 rounded-lg text-green-400 hover:bg-green-600/10">Export Excel</a>
                         <a href="{{ route('rencana.export-pdf') }}" class="px-3 py-1.5 text-xs border border-red-600 rounded-lg text-red-400 hover:bg-red-600/10">Export PDF</a>
                     </div>
                 </div>
-                <table class="w-full text-xs text-left whitespace-nowrap">
+                <table class="w-full text-xs text-left whitespace-nowrap" id="rencanaTableUser">
                     <thead class="border-b border-polri-dark-light text-polri-silver-dark">
                         <tr>
                             <th class="py-2 pr-3">No</th>
@@ -571,7 +596,7 @@
                     </thead>
                     <tbody>
                         @forelse($rencanaAnggaran as $item)
-                        <tr class="border-b border-polri-dark-light">
+                        <tr class="border-b border-polri-dark-light rencana-row-user" data-satker="{{ $item['satker'] }}">
                             <td class="py-2 pr-3 text-polri-silver-dark">{{ $loop->iteration }}</td>
                             <td class="py-2 pr-3 text-white">{{ $item['satker'] }}</td>
                             <td class="py-2 pr-3 text-polri-silver">{{ $item['item'] }}</td>
@@ -586,7 +611,7 @@
                         </tr>
                         @endforelse
                         @if(count($rencanaAnggaran) > 0)
-                        <tr class="bg-polri-dark-light/40 font-semibold">
+                        <tr class="bg-polri-dark-light/40 font-semibold" id="rencanaTotalUser">
                             <td colspan="3" class="py-2 pr-3 text-white uppercase text-[10px] tracking-wider">Total</td>
                             <td class="py-2 pr-3 text-white">Rp {{ number_format($rencanaTotal['pagu'], 0, ',', '.') }}</td>
                             @foreach(['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'] as $bln)
@@ -596,7 +621,30 @@
                         @endif
                     </tbody>
                 </table>
+                <p class="text-xs text-polri-silver-dark mt-3" id="rencanaInfoUser"></p>
             </div>
+
+            <script>
+                (function() {
+                    const input = document.getElementById('searchRencanaUser');
+                    const rows = document.querySelectorAll('.rencana-row-user');
+                    const totalRow = document.getElementById('rencanaTotalUser');
+                    const info = document.getElementById('rencanaInfoUser');
+                    function apply() {
+                        const kw = input.value.toLowerCase();
+                        let visible = 0;
+                        rows.forEach(r => {
+                            const show = r.textContent.toLowerCase().includes(kw);
+                            r.style.display = show ? '' : 'none';
+                            if (show) visible++;
+                        });
+                        if (totalRow) totalRow.style.display = kw ? 'none' : '';
+                        info.textContent = `Menampilkan ${visible} dari ${rows.length} data`;
+                    }
+                    input.addEventListener('input', apply);
+                    apply();
+                })();
+            </script>
 
             @endif
 
