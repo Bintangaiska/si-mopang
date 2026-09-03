@@ -105,7 +105,7 @@
                 @auth
                     <a href="{{ route('dashboard') }}" class="px-5 py-2 text-sm bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-lg hover:opacity-90 transition">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="px-5 py-2 text-sm bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-lg hover:opacity-90 transition">Log in</a>
+                    <a href="{{ route('login') }}" class="px-5 py-2 text-sm text-white rounded-lg hover:opacity-90 transition">Log in</a>
                     <a href="{{ route('register') }}" class="px-5 py-2 text-sm bg-gradient-to-r from-polri-red to-polri-navy text-white rounded-lg hover:opacity-90 transition">Register</a>
                 @endauth
             </div>
@@ -131,40 +131,6 @@
         </div>
     </nav>
 
-    {{-- Hero --}}
-    <!-- <div class="relative z-10 max-w-5xl mx-auto px-6 py-20 text-center">
-        <p class="text-xs text-polri-silver-dark tracking-widest uppercase mb-3">Kepolisian Negara Republik Indonesia Daerah Jawa Timur</p>
-        <!-- <h1 class="text-4xl md:text-5xl font-bold text-polri-gray mb-5 leading-tight"> -->
-        <!-- <h1 class="text-4xl md:text-5xl font-bold text-white mb-5 leading-tight">
-            Sistem Informasi dan Monitoring<br>Penyerapan Anggaran
-        </h1>
-        <p class="text-polri-silver-dark max-w-2xl mx-auto mb-8 text-sm md:text-base">
-            Mendukung optimalisasi pencapaian nilai IKPA pada Satker Bid TIK Polda Jatim melalui
-            digitalisasi pengajuan, monitoring, dan realisasi anggaran secara terstruktur dan tepat waktu.
-        </p>
-        @guest
-            <a href="{{ route('login') }}" class="inline-block px-8 py-3 bg-gradient-to-r from-polri-red to-polri-navy text-white text-sm font-semibold rounded-lg hover:opacity-90 transition tracking-wide">
-                MASUK KE SISTEM
-            </a>
-        @endguest
-
-        <!-- <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
-
-        <div class="glass-card rounded-xl p-4">
-            <p class="text-gray-400 text-xs">Total Satker</p>
-            <p class="text-2xl font-bold text-white">4</p>
-        </div>
-
-        <div class="glass-card rounded-xl p-4">
-            <p class="text-gray-400 text-xs">Pengajuan Aktif</p>
-            <p class="text-2xl font-bold text-white">48</p>
-        </div>
-
-        <div class="glass-card rounded-xl p-4">
-            <p class="text-gray-400 text-xs">Penyerapan Anggaran</p>
-            <p class="text-2xl font-bold text-red-500">87%</p>
-        </div>
-</div> -->
     {{-- Hero --}}
     <div class="relative z-10 max-w-7xl mx-auto px-6 py-24">
 
