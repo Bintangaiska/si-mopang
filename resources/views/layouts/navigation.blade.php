@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex items-center gap-8">
-            
+
             <!-- Logo
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3 shrink-0">
                     <img src="{{ asset('images/logo-tikpolri.png') }}" class="h-10 w-10 object-contain" alt="Logo TIK Polri">
@@ -140,7 +140,7 @@
             @if(auth()->user()->role === 'super_admin')
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Dashboard</a>
                 <a href="{{ route('user-management.index') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen User</a>
-                <a href="{{ route('settings.pagu') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Pengaturan</a>
+                <a href="{{ route('settings.pagu') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen Pagu</a>
             @elseif(auth()->user()->role === 'admin')
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Dashboard</a>
                 <a href="{{ route('pengajuan.index') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen Pengajuan</a>
