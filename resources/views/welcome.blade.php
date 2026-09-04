@@ -186,7 +186,7 @@
                             </div>
 
                             <img
-                                src="{{ asset('images/kabidNew.png') }}"
+                                src="{{ $pengaturan->foto_kabid_path ? asset('storage/' . $pengaturan->foto_kabid_path) : asset('images/kabidNew.png') }}"
                                 alt="Kabid TIK"
                                 class="w-full h-full object-cover object-top block"
                                 style="
@@ -211,10 +211,10 @@
                         <!-- Info Teks -->
                         <div class="border-t border-white/10 pt-6 w-full text-center mt-auto">
                             <h3 class="text-white font-bold text-2xl">
-                                Kombes Pol. Agusman Gurning, S.H., S.I.K, M.H.
+                                {{ $pengaturan->nama_kabid ?? 'Kombes Pol. Agusman Gurning, S.H., S.I.K, M.H.' }}
                             </h3>
                             <p class="text-gray-400 text-sm mt-2 leading-relaxed">
-                                Kepala Bidang Teknologi Informasi dan Komunikasi
+                                {{ $pengaturan->jabatan_kabid ?? 'Kepala Bidang Teknologi Informasi dan Komunikasi' }}
                                 <br>
                                 Polda Jawa Timur
                             </p>

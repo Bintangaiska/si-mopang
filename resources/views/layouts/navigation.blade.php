@@ -3,20 +3,6 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center gap-8">
 
-            <!-- Logo
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 shrink-0">
-                    <img src="{{ asset('images/logo-tikpolri.png') }}" class="h-10 w-10 object-contain" alt="Logo TIK Polri">
-
-                    <div class="flex flex-col">
-                        <span class="font-bold text-polri-silver tracking-widest text-sm">
-                            SIMOPANG
-                        </span>
-                        <span class="text-[10px] text-polri-silver-dark uppercase tracking-wider">
-                            Monitoring Penyerapan Anggaran
-                        </span>
-                    </div>
-                </a>  -->
-
             <!-- Logo -->
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3 shrink-0">
                     <img
@@ -44,10 +30,10 @@
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('dashboard') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Dashboard</a>
                         <a href="{{ route('user-management.index') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('user-management.*') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Manajemen User</a>
                         <a href="{{ route('settings.pagu') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('settings.*') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Manajemen Pagu</a>
+                        <a href="{{ route('settings.index') }}"class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('settings.index') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Pengaturan</a>
                     @elseif(auth()->user()->role === 'admin')
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('dashboard') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Dashboard</a>
                         <a href="{{ route('pengajuan.index') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('pengajuan.index') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Manajemen Pengajuan</a>
-                        <!-- <a href="#" class="px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white transition">Manajemen User</a> -->
                     @else
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('dashboard') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Dashboard</a>
                         <a href="{{ route('pengajuan.create') }}" class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('pengajuan.create') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Ajukan Anggaran</a>
@@ -144,7 +130,7 @@
             @elseif(auth()->user()->role === 'admin')
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Dashboard</a>
                 <a href="{{ route('pengajuan.index') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen Pengajuan</a>
-                <!-- <a href="#" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Manajemen User</a> -->
+                <a href="{{ route('settings.index') }}"class="px-3 py-2 rounded-lg text-sm {{ request()->routeIs('settings.index') ? 'bg-polri-red/20 text-white' : 'text-polri-silver hover:bg-polri-red/10 hover:text-white' }} transition">Pengaturan</a>
             @else
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Dashboard</a>
                 <a href="{{ route('pengajuan.create') }}" class="block px-3 py-2 rounded-lg text-sm text-polri-silver hover:bg-polri-red/10 hover:text-white">Ajukan Anggaran</a>

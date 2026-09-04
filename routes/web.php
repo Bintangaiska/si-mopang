@@ -5,7 +5,8 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $pengaturan = \App\Models\Pengaturan::current();
+    return view('welcome', compact('pengaturan'));
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -49,6 +50,8 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::post('/settings/rencana', [App\Http\Controllers\SettingsController::class, 'storeRencana'])->name('settings.rencana.store');
     Route::patch('/settings/rencana/{rencana}', [App\Http\Controllers\SettingsController::class, 'updateRencana'])->name('settings.rencana.update');
     Route::delete('/settings/rencana/{rencana}', [App\Http\Controllers\SettingsController::class, 'destroyRencana'])->name('settings.rencana.destroy');
+    Route::post('/settings/tampilan', [App\Http\Controllers\SettingsController::class, 'updateTampilan'])->name('settings.tampilan.update');
+    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
 });
 
 
